@@ -34,7 +34,32 @@
         }
 
         .burger-menu { font-size: 24px; cursor: pointer; background: none; border: none; }
+
+	.share-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+}
+
+.share-icon-img {
+    width: 30px;  /* Ajusta este tamaño según prefieras */
+    height: 30px;
+    /* Si quieres que el icono sea del color primario (rojo), 
+       puedes usar el siguiente filtro si el SVG es negro originalmente: */
+    /* filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%); */
+}
+	
         .store-name { font-weight: 700; font-size: 1.2rem; color: var(--primary); }
+
+	/* Ajuste para que el nombre de la tienda no se pegue al icono */
+	.store-name {
+	    flex-grow: 1;
+	    text-align: center;
+	    margin-left: 10px;
+	}
 
         /* --- Menú Desplegable --- */
         .dropdown-content {
@@ -140,13 +165,18 @@
 <body>
 
     <header>
-        <button class="burger-menu" onclick="toggleMenu()">☰</button>
-        <div class="store-name">RICURAS APRIL</div>
-        <div id="dropdown" class="dropdown-content">
-            <a href="#section-perro" onclick="toggleMenu()">Perros</a>
-            <a href="#section-hamburguesa" onclick="toggleMenu()">Hamburguesas</a>
-        </div>
-    </header>
+	<button class="burger-menu" onclick="toggleMenu()">☰</button>
+	<div class="store-name">RICURAS APRIL</div>
+	<!-- Nuevo botón de compartir -->
+    	<button class="share-btn" onclick="shareApp()">
+	    <img src="img/share-icon.svg" alt="Compartir" class="share-icon-img">
+	</button>
+    
+	<div id="dropdown" class="dropdown-content">
+	    <a href="#section-perro" onclick="toggleMenu()">Perros</a>
+	    <a href="#section-hamburguesa" onclick="toggleMenu()">Hamburguesas</a>
+	</div>
+    </header>        
 
     <div class="hero">
         <img src="img/logo.png" alt="Logo" class="logo-img">
@@ -314,7 +344,7 @@
 
         function sendWhatsApp() {
             let total = 0;
-            let orderText = "Hola. Por favor quiero ordenar el siguiente pedido:%0A";
+            let orderText = "Hola. Por favor quisiera ordenar el siguiente pedido:%0A";
             let hasItems = false;
 
             Object.values(products).forEach(p => {
@@ -337,6 +367,27 @@
             const phoneNumber = "573209739057"; // Reemplazar con el número real
             window.open(`https://wa.me/${phoneNumber}?text=${orderText}`, '_blank');
         }
+
+	async function shareApp() {
+	    const shareData = {
+	        title: 'Menú Interactivo | Ricuras April',
+	        text: 'Mira este menú y haz tu pedido por WhatsApp:',
+	        url: window.location.href // Captura automáticamente la URL actual
+	    };
+
+	    try {
+	        if (navigator.share) {
+	            await navigator.share(shareData);
+	        } else {
+	            // Alternativa si el navegador no soporta compartir (PC)
+	            await navigator.clipboard.writeText(window.location.href);
+	            alert("Enlace copiado al portapapeles");
+	        }
+	    } catch (err) {
+	        console.log("Error al compartir: ", err);
+	    }
+	}
+
     </script>
 </body>
 </html>
