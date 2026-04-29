@@ -11,6 +11,7 @@
             --dark: #2c3e50;
             --light: #f9f9f9;
             --white: #ffffff;
+	    --black: #000000;		
         }
 
         body {
@@ -50,13 +51,17 @@
 	.hero { 
  	    text-align: center; 
 	    padding: 10px 10px 0 10px; /* Reducimos el padding inferior a 0 */
-	    background: var(--white); 
+	    background: var(--dark);
+
+	    /* Degradado: empieza en tu azul y termina en blanco abajo */
+    	    background: linear-gradient(to bottom, var(--dark) 70%, #000000 100%); 
 	}
 
 	.hero h1 {
 	    margin-top: 5px;  /* Esto controla directamente la distancia con el logo */
 	    margin-bottom: 5px;
  	    font-size: 1.8rem; /* Opcional: ajusta el tamaño si lo ves muy grande */
+	    color: #ffffff !important;
 	}
 
 	.logo-img { 
@@ -64,9 +69,14 @@
 	    border-radius: 50%; 
 	    display: block;    /* Ayuda a controlar mejor los márgenes */
 	    margin: 0 auto; 
+
+	    /* --- El Margen Interno (Padding) --- */
+            padding: 5px;           /* Espacio entre el logo y el borde del círculo */
+            background-color: #ffffff; /* Color del "anillo" que rodea al logo */
+            object-fit: contain;    /* Asegura que el logo no se deforme dentro del espacio */
 	}
 
-        .hero { text-align: center; padding: 10px; background: var(--white); }
+        .hero { text-align: center; padding: 10px;  }
         .logo-img { max-width: 120px; border-radius: 50%; }
 
         .section-banner { width: 100%; height: 150px; object-fit: cover; margin-top: 10px; }
@@ -95,11 +105,11 @@
         /* --- Carrito Flotante --- */
         .cart-float {
             position: fixed; bottom: 80px; right: 20px;
-            background: var(--primary); color: white;
+            background: var(--primary); color: black;
             width: 55px; height: 55px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 1001;
-            cursor: pointer; border: none; font-size: 24px;
+            cursor: pointer; border: none; font-size: 24px;	    
         }
 
         #cart-modal {
