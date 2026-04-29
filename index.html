@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #e67e22;
+            --primary: #c0392b;
             --dark: #2c3e50;
             --light: #f9f9f9;
             --white: #ffffff;
@@ -47,10 +47,29 @@
         }
 
         /* --- Contenido Principal --- */
-        .hero { text-align: center; padding: 20px; background: var(--white); }
+	.hero { 
+ 	    text-align: center; 
+	    padding: 10px 10px 0 10px; /* Reducimos el padding inferior a 0 */
+	    background: var(--white); 
+	}
+
+	.hero h1 {
+	    margin-top: 5px;  /* Esto controla directamente la distancia con el logo */
+	    margin-bottom: 5px;
+ 	    font-size: 1.8rem; /* Opcional: ajusta el tamaño si lo ves muy grande */
+	}
+
+	.logo-img { 
+	    max-width: 120px; 
+	    border-radius: 50%; 
+	    display: block;    /* Ayuda a controlar mejor los márgenes */
+	    margin: 0 auto; 
+	}
+
+        .hero { text-align: center; padding: 10px; background: var(--white); }
         .logo-img { max-width: 120px; border-radius: 50%; }
 
-        .section-banner { width: 100%; height: 150px; object-fit: cover; margin-top: 20px; }
+        .section-banner { width: 100%; height: 150px; object-fit: cover; margin-top: 10px; }
         .section-title { padding: 15px 20px; background: var(--dark); color: var(--white); margin: 0; }
 
         /* --- Productos --- */
@@ -101,13 +120,18 @@
         .wa-float img { width: 30px; }
 
         hr { border: 0; border-top: 1px solid #eee; margin: 10px 0; }
+
+	/* Agrega espacio al final para que los iconos flotantes no tapen nada */
+	body {
+	    padding-bottom: 100px; 
+	}
     </style>
 </head>
 <body>
 
     <header>
         <button class="burger-menu" onclick="toggleMenu()">☰</button>
-        <div class="store-name">FOOD STATION</div>
+        <div class="store-name">RICURAS APRIL</div>
         <div id="dropdown" class="dropdown-content">
             <a href="#section-perro" onclick="toggleMenu()">Perros</a>
             <a href="#section-hamburguesa" onclick="toggleMenu()">Hamburguesas</a>
@@ -115,13 +139,13 @@
     </header>
 
     <div class="hero">
-        <img src="logo.png" alt="Logo" class="logo-img">
-        <h1>Food Station Cali</h1>
+        <img src="img/logo.png" alt="Logo" class="logo-img">
+        <h1>Ricuras April</h1>
     </div>
 
     <!-- SECCIÓN PERROS -->
     <div id="section-perro">
-        <img src="perros.jpg" class="section-banner">
+        <img src="img/perros.jpg" class="section-banner">
         <h2 class="section-title">Perros</h2>
         
         <div class="product-card">
@@ -166,7 +190,7 @@
 
     <!-- SECCIÓN HAMBURGUESAS -->
     <div id="section-hamburguesa">
-        <img src="hamburguesas.jpg" class="section-banner">
+        <img src="img/hamburguesas.jpg" class="section-banner">
         <h2 class="section-title">Hamburguesas</h2>
         
         <div class="product-card">
