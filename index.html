@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menú Interactivo | Delivery</title>
+    <title>Menú Interactivo | Ricuras April</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -11,7 +11,7 @@
             --dark: #2c3e50;
             --light: #f9f9f9;
             --white: #ffffff;
-	    --black: #000000;		
+            --black: #000000;		
         }
 
         body {
@@ -20,9 +20,9 @@
             padding-top: 60px;
             background-color: var(--light);
             color: var(--dark);
+            padding-bottom: 100px;
         }
 
-        /* --- Panel Superior Fijo --- */
         header {
             position: fixed;
             top: 0; width: 100%; height: 60px;
@@ -34,80 +34,33 @@
         }
 
         .burger-menu { font-size: 24px; cursor: pointer; background: none; border: none; }
+        .store-name { font-weight: 700; font-size: 1.2rem; color: var(--primary); flex-grow: 1; text-align: center; margin-left: 10px; }
+        
+        .share-btn { background: none; border: none; cursor: pointer; display: flex; align-items: center; padding: 5px; }
+        .share-icon-img { width: 30px; height: 30px; }
 
-	.share-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    padding: 5px;
-}
-
-.share-icon-img {
-    width: 30px;  /* Ajusta este tamaño según prefieras */
-    height: 30px;
-    /* Si quieres que el icono sea del color primario (rojo), 
-       puedes usar el siguiente filtro si el SVG es negro originalmente: */
-    /* filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%); */
-}
-	
-        .store-name { font-weight: 700; font-size: 1.2rem; color: var(--primary); }
-
-	/* Ajuste para que el nombre de la tienda no se pegue al icono */
-	.store-name {
-	    flex-grow: 1;
-	    text-align: center;
-	    margin-left: 10px;
-	}
-
-        /* --- Menú Desplegable --- */
         .dropdown-content {
             display: none; position: fixed; top: 60px; left: 0;
-            background: var(--white); width: 200px;
+            background: var(--white); width: 220px;
             box-shadow: 2px 2px 10px rgba(0,0,0,0.1); z-index: 999;
+            max-height: 80vh; overflow-y: auto;
         }
         .dropdown-content a {
-            display: block; padding: 15px 20px;
-            text-decoration: none; color: var(--dark); border-bottom: 1px solid #eee;
+            display: block; padding: 12px 20px;
+            text-decoration: none; color: var(--dark); border-bottom: 1px solid #eee; font-size: 0.9rem;
         }
 
-        /* --- Contenido Principal --- */
-	.hero { 
- 	    text-align: center; 
-	    padding: 10px 10px 0 10px; /* Reducimos el padding inferior a 0 */
-	    background: var(--dark);
-
-	    /* Degradado: empieza en tu azul y termina en blanco abajo */
-    	    background: linear-gradient(to bottom, var(--dark) 70%, #000000 100%); 
-	}
-
-	.hero h1 {
-	    margin-top: 5px;  /* Esto controla directamente la distancia con el logo */
-	    margin-bottom: 5px;
- 	    font-size: 1.8rem; /* Opcional: ajusta el tamaño si lo ves muy grande */
-	    color: #ffffff !important;
-	}
-
-	.logo-img { 
-	    max-width: 120px; 
-	    border-radius: 50%; 
-	    display: block;    /* Ayuda a controlar mejor los márgenes */
-	    margin: 0 auto; 
-
-	    /* --- El Margen Interno (Padding) --- */
-            padding: 5px;           /* Espacio entre el logo y el borde del círculo */
-            background-color: #ffffff; /* Color del "anillo" que rodea al logo */
-            object-fit: contain;    /* Asegura que el logo no se deforme dentro del espacio */
-	}
-
-        .hero { text-align: center; padding: 10px;  }
-        .logo-img { max-width: 120px; border-radius: 50%; }
+        .hero { 
+            text-align: center; 
+            padding: 10px 10px 20px 10px; 
+            background: linear-gradient(to bottom, var(--dark) 70%, #000000 100%);
+        }
+        .hero h1 { margin: 5px 0; font-size: 1.8rem; color: #ffffff; }
+        .logo-img { max-width: 120px; border-radius: 50%; display: block; margin: 0 auto; padding: 5px; background-color: #ffffff; object-fit: contain; }
 
         .section-banner { width: 100%; height: 150px; object-fit: cover; margin-top: 10px; }
         .section-title { padding: 15px 20px; background: var(--dark); color: var(--white); margin: 0; }
 
-        /* --- Productos --- */
         .product-card {
             background: var(--white); margin: 10px; padding: 15px;
             border-radius: 8px; display: flex; justify-content: space-between;
@@ -121,16 +74,15 @@
 
         .controls { display: flex; align-items: center; gap: 10px; margin-left: 15px; }
         .btn-qty { 
-            width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--primary);
+            width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--primary);
             background: var(--white); color: var(--primary); font-weight: bold; cursor: pointer;
         }
         .btn-qty:disabled { border-color: #ccc; color: #ccc; }
         .qty-display { min-width: 20px; text-align: center; font-weight: 600; }
 
-        /* --- Carrito Flotante --- */
         .cart-float {
             position: fixed; bottom: 80px; right: 20px;
-            background: var(--primary); color: black;
+            background: var(--primary); color: white;
             width: 55px; height: 55px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 1001;
@@ -139,12 +91,13 @@
 
         #cart-modal {
             display: none; position: fixed; bottom: 145px; right: 20px;
-            background: white; width: 280px; max-height: 400px;
+            background: white; width: 300px; max-height: 450px;
             border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.2);
             padding: 20px; overflow-y: auto; z-index: 1001;
         }
+        .cart-item-row { margin-bottom: 12px; border-bottom: 1px solid #f0f0f0; padding-bottom: 5px; }
+        .cart-item-sub { font-size: 0.85rem; color: #666; display: block; margin-top: 2px; }
 
-        /* --- WhatsApp --- */
         .wa-float {
             position: fixed; bottom: 15px; right: 20px;
             background: #25d366; width: 55px; height: 55px;
@@ -153,29 +106,31 @@
             z-index: 1001; cursor: pointer;
         }
         .wa-float img { width: 30px; }
-
-        hr { border: 0; border-top: 1px solid #eee; margin: 10px 0; }
-
-	/* Agrega espacio al final para que los iconos flotantes no tapen nada */
-	body {
-	    padding-bottom: 100px; 
-	}
     </style>
 </head>
 <body>
 
     <header>
-	<button class="burger-menu" onclick="toggleMenu()">☰</button>
-	<div class="store-name">RICURAS APRIL</div>
-	<!-- Nuevo botón de compartir -->
-    	<button class="share-btn" onclick="shareApp()">
-	    <img src="img/share-icon.svg" alt="Compartir" class="share-icon-img">
-	</button>
-    
-	<div id="dropdown" class="dropdown-content">
-	    <a href="#section-perro" onclick="toggleMenu()">Perros</a>
-	    <a href="#section-hamburguesa" onclick="toggleMenu()">Hamburguesas</a>
-	</div>
+        <button class="burger-menu" onclick="toggleMenu()">☰</button>
+        <div class="store-name">RICURAS APRIL</div>
+        <button class="share-btn" onclick="shareApp()">
+            <img src="img/share-icon.svg" alt="Compartir" class="share-icon-img">
+        </button>
+        
+        <div id="dropdown" class="dropdown-content">
+            <a href="#section-promo" onclick="toggleMenu()">Promociones</a>
+            <a href="#section-perro" onclick="toggleMenu()">Perros</a>
+            <a href="#section-hamburguesa" onclick="toggleMenu()">Hamburguesas</a>
+            <a href="#section-salchipapa" onclick="toggleMenu()">Salchipapas</a>
+            <a href="#section-pepito" onclick="toggleMenu()">Pepitos</a>
+            <a href="#section-cachapa" onclick="toggleMenu()">Cachapas</a>
+            <a href="#section-patacon" onclick="toggleMenu()">Patacones</a>
+            <a href="#section-shawarma" onclick="toggleMenu()">Shawarmas</a>
+            <a href="#section-empanada" onclick="toggleMenu()">Empanadas</a>
+            <a href="#section-clubhouse" onclick="toggleMenu()">Clubhouse</a>
+            <a href="#section-bebidas-p" onclick="toggleMenu()">Bebidas Personales</a>
+            <a href="#section-bebidas-g" onclick="toggleMenu()">Bebidas 1.5L</a>
+        </div>
     </header>        
 
     <div class="hero">
@@ -183,14 +138,30 @@
         <h1>Ricuras April</h1>
     </div>
 
-    <!-- SECCIÓN PERROS -->
-    <div id="section-perro">
-        <img src="img/perros.jpg" class="section-banner">
-        <h2 class="section-title">Perros</h2>
-        
+    <!-- PROMOS -->
+    <div id="section-promo">
+        <h2 class="section-title">Promociones (Lun a Jue)</h2>
         <div class="product-card">
             <div class="product-info">
-                <p class="product-name" id="name-p1">Sencillo</p>
+                <p class="product-name" id="name-prom1">2 Hamburguesas</p>
+                <p class="product-desc">Pan, carne casera, tomate, lechuga, tocineta, queso, ripio, salsas.</p>
+                <span class="product-price">$ 17.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('prom1', -1)" id="btn-minus-prom1" disabled>-</button>
+                <span class="qty-display" id="qty-prom1">0</span>
+                <button class="btn-qty" onclick="updateQty('prom1', 1)">+</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PERROS -->
+    <div id="section-perro">
+        <img src="img/perros-banner.jpg" class="section-banner">
+        <h2 class="section-title">Perros</h2>
+        <div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-p1">Perro Sencillo</p>
                 <p class="product-desc">Pan, salchicha, cebolla, ensalada, ripio, queso, salsa.</p>
                 <span class="product-price">$ 9.000</span>
             </div>
@@ -200,11 +171,11 @@
                 <button class="btn-qty" onclick="updateQty('p1', 1)">+</button>
             </div>
         </div>
-
+        <!-- ... (Perro Especial y Full equipo ya están definidos en tu script) ... -->
         <div class="product-card">
             <div class="product-info">
-                <p class="product-name" id="name-p2">Especial</p>
-                <p class="product-desc">Pan, salchicha, cebolla, ensalada, ripio, tocineta queso, jamón.</p>
+                <p class="product-name" id="name-p2">Perro Especial</p>
+                <p class="product-desc">Pan, salchicha, cebolla, ensalada, ripio, tocineta, queso, jamón.</p>
                 <span class="product-price">$ 12.000</span>
             </div>
             <div class="controls">
@@ -213,11 +184,10 @@
                 <button class="btn-qty" onclick="updateQty('p2', 1)">+</button>
             </div>
         </div>
-
         <div class="product-card">
             <div class="product-info">
-                <p class="product-name" id="name-p3">Full equipo</p>
-                <p class="product-desc">Pan, salchicha, cebolla, ensalada, ripio, tocineta queso jamón, aguacate, maicitos.</p>
+                <p class="product-name" id="name-p3">Perro Full equipo</p>
+                <p class="product-desc">Pan, salchicha, cebolla, ensalada, ripio, tocineta, queso, jamón, aguacate, maicitos.</p>
                 <span class="product-price">$ 16.000</span>
             </div>
             <div class="controls">
@@ -228,14 +198,14 @@
         </div>
     </div>
 
-    <!-- SECCIÓN HAMBURGUESAS -->
+    <!-- HAMBURGUESAS -->
     <div id="section-hamburguesa">
-        <img src="img/hamburguesas.jpg" class="section-banner">
+        <img src="img/hamburguesas-banner.jpg" class="section-banner">
         <h2 class="section-title">Hamburguesas</h2>
-        
+        <!-- Sencilla, Pollo, Mixta ya las tienes, agregamos las nuevas -->
         <div class="product-card">
             <div class="product-info">
-                <p class="product-name" id="name-h1">Sencilla</p>
+                <p class="product-name" id="name-h1">Hamburguesa Sencilla</p>
                 <p class="product-desc">Pan, tomate, lechuga, cebolla, carne casera, tocineta, queso, jamón, ripio, huevo, salsas.</p>
                 <span class="product-price">$ 13.000</span>
             </div>
@@ -245,10 +215,9 @@
                 <button class="btn-qty" onclick="updateQty('h1', 1)">+</button>
             </div>
         </div>
-
         <div class="product-card">
             <div class="product-info">
-                <p class="product-name" id="name-h2">Pollo</p>
+                <p class="product-name" id="name-h2">Hamburguesa Pollo</p>
                 <p class="product-desc">Pan, tomate, lechuga, cebolla, filete de pollo, tocineta, queso, jamón, ripio, huevo, salsas.</p>
                 <span class="product-price">$ 13.000</span>
             </div>
@@ -258,10 +227,9 @@
                 <button class="btn-qty" onclick="updateQty('h2', 1)">+</button>
             </div>
         </div>
-
         <div class="product-card">
             <div class="product-info">
-                <p class="product-name" id="name-h3">Mixta</p>
+                <p class="product-name" id="name-h3">Hamburguesa Mixta</p>
                 <p class="product-desc">Pan, tomate, lechuga, cebolla, carne, pollo, tocineta, queso, ripio, huevo, salsas.</p>
                 <span class="product-price">$ 20.000</span>
             </div>
@@ -269,6 +237,682 @@
                 <button class="btn-qty" onclick="updateQty('h3', -1)" id="btn-minus-h3" disabled>-</button>
                 <span class="qty-display" id="qty-h3">0</span>
                 <button class="btn-qty" onclick="updateQty('h3', 1)">+</button>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-h4">Hamburguesa Especial</p>
+                <p class="product-desc">Pan, tomate, lechuga, cebolla, carne casera, chorizo, aguacate, tocineta, queso, jamón, huevo, maicitos, ripio, salsas.</p>
+                <span class="product-price">$ 22.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('h4', -1)" id="btn-minus-h4" disabled>-</button>
+                <span class="qty-display" id="qty-h4">0</span>
+                <button class="btn-qty" onclick="updateQty('h4', 1)">+</button>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-h5">Chuleta</p>
+                <p class="product-desc">Pan, tomate, lechuga, cebolla, chuleta ahumada, tocineta, queso, jamón, ripio, huevo, salsas.</p>
+                <span class="product-price">$ 19.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('h5', -1)" id="btn-minus-h5" disabled>-</button>
+                <span class="qty-display" id="qty-h5">0</span>
+                <button class="btn-qty" onclick="updateQty('h5', 1)">+</button>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-h6">Hamburguesa Full equipo</p>
+                <p class="product-desc">Pan, tomate, lechuga, cebolla, carne pollo, chuleta, chorizo, jamón, tocineta, queso, aguacate, huevo, ripio, maicitos, salsas.</p>
+                <span class="product-price">$ 28.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('h6', -1)" id="btn-minus-h6" disabled>-</button>
+                <span class="qty-display" id="qty-h6">0</span>
+                <button class="btn-qty" onclick="updateQty('h6', 1)">+</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SALCHIPAPAS -->
+    <div id="section-salchipapa">
+        <img src="img/salchipapa-banner.jpg" class="section-banner">
+        <h2 class="section-title">Salchipapas</h2>
+        <div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-s1">Salchipapa Sencilla Peq.</p>
+                <p class="product-desc">Papa francesa, salchicha, ripio, salsas.</p>
+                <span class="product-price">$ 8.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('s1', -1)" id="btn-minus-s1" disabled>-</button>
+                <span class="qty-display" id="qty-s1">0</span>
+                <button class="btn-qty" onclick="updateQty('s1', 1)">+</button>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-s2">Salchipapa Sencilla Gde.</p>
+                <p class="product-desc">Papa francesa, salchicha, ripio, salsas.</p>
+                <span class="product-price">$ 14.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('s2', -1)" id="btn-minus-s2" disabled>-</button>
+                <span class="qty-display" id="qty-s2">0</span>
+                <button class="btn-qty" onclick="updateQty('s2', 1)">+</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-s3">Salchipapa Gratinada Peq.</p>
+                <p class="product-desc">Salchicha, papa francesa, queso, ripio, salsas.</p>
+                <span class="product-price">$ 9.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('s3', -1)" id="btn-minus-s3" disabled>-</button>
+                <span class="qty-display" id="qty-s3">0</span>
+                <button class="btn-qty" onclick="updateQty('s3', 1)">+</button>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-s4">Salchipapa Gratinada Gde.</p>
+                <p class="product-desc">Salchicha, papa francesa, queso, ripio, salsas.</p>
+                <span class="product-price">$ 15.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('s4', -1)" id="btn-minus-s4" disabled>-</button>
+                <span class="qty-display" id="qty-s4">0</span>
+                <button class="btn-qty" onclick="updateQty('s4', 1)">+</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-s5">Salchipapa Especial Peq.</p>
+                <p class="product-desc">Papa francesa, salchicha, chorizo, queso, tocineta, ripio, salsas.</p>
+                <span class="product-price">$ 10.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('s5', -1)" id="btn-minus-s5" disabled>-</button>
+                <span class="qty-display" id="qty-s5">0</span>
+                <button class="btn-qty" onclick="updateQty('s5', 1)">+</button>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-s6">Salchipapa Especial Gde.</p>
+                <p class="product-desc">Papa francesa, salchicha, chorizo, queso, tocineta, ripio, salsas.</p>
+                <span class="product-price">$ 17.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('s6', -1)" id="btn-minus-s6" disabled>-</button>
+                <span class="qty-display" id="qty-s6">0</span>
+                <button class="btn-qty" onclick="updateQty('s6', 1)">+</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-s7">Salchicarne Peq.</p>
+                <p class="product-desc">Papa francesa, salchicha, carne desmechada, queso, tocineta, maicitos, ripio, salsas.</p>
+                <span class="product-price">$ 18.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('s7', -1)" id="btn-minus-s7" disabled>-</button>
+                <span class="qty-display" id="qty-s7">0</span>
+                <button class="btn-qty" onclick="updateQty('s7', 1)">+</button>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-s8">Salchicarne Gde.</p>
+                <p class="product-desc">Papa francesa, salchicha, carne desmechada, queso, tocineta, maicitos, ripio, salsas.</p>
+                <span class="product-price">$ 30.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('s8', -1)" id="btn-minus-s8" disabled>-</button>
+                <span class="qty-display" id="qty-s8">0</span>
+                <button class="btn-qty" onclick="updateQty('s8', 1)">+</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-s7">Salchipollo Peq.</p>
+                <p class="product-desc">Papa francesa, salchicha, pollo desmechado, queso, tocineta, maicitos, ripio, salsas.</p>
+                <span class="product-price">$ 18.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('s7', -1)" id="btn-minus-s7" disabled>-</button>
+                <span class="qty-display" id="qty-s7">0</span>
+                <button class="btn-qty" onclick="updateQty('s7', 1)">+</button>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-s8">Salchipollo Gde.</p>
+                <p class="product-desc">Papa francesa, salchicha, pollo desmechado, queso, tocineta, maicitos, ripio, salsas.</p>
+                <span class="product-price">$ 30.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('s8', -1)" id="btn-minus-s8" disabled>-</button>
+                <span class="qty-display" id="qty-s8">0</span>
+                <button class="btn-qty" onclick="updateQty('s8', 1)">+</button>
+            </div>
+        </div>
+
+    <!-- PEPITOS -->
+    <div id="section-pepito">
+        <img src="img/pepito-banner.jpg" class="section-banner">
+        <h2 class="section-title">Pepitos</h2>
+        <div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-pep1">Pepito</p>
+                <p class="product-desc">Pan 40 CM, carne de res, carne de cerdo, tomate, lechuga, cebolla, aguacate, maicitos, tocineta, queso.</p>
+                <span class="product-price">$ 28.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('pep1', -1)" id="btn-minus-pep1" disabled>-</button>
+                <span class="qty-display" id="qty-pep1">0</span>
+                <button class="btn-qty" onclick="updateQty('pep1', 1)">+</button>
+            </div>
+        </div>
+	<div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-pep2">Mini Pepito</p>
+                <p class="product-desc">Pan 20 CM, carne de res, carne de cerdo, tomate, lechuga, cebolla, aguacate, maicitos, tocineta, queso.</p>
+                <span class="product-price">$ 28.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('pep2', -1)" id="btn-minus-pep2" disabled>-</button>
+                <span class="qty-display" id="qty-pep2">0</span>
+                <button class="btn-qty" onclick="updateQty('pep2', 1)">+</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CACHAPAS -->
+    <div id="section-cachapa">
+        <img src="img/cachapa-banner.jpg" class="section-banner">
+        <h2 class="section-title">Cachapas</h2>
+        <div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-ca1">Cachapa con Queso</p>
+                <p class="product-desc">Cachapa de maíz tierno y queso de mano.</p>
+                <span class="product-price">$ 15.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('ca1', -1)" id="btn-minus-ca1" disabled>-</button>
+                <span class="qty-display" id="qty-ca1">0</span>
+                <button class="btn-qty" onclick="updateQty('ca1', 1)">+</button>
+            </div>
+        </div>
+	<div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-ca2">Cachapa con Cerdo</p>
+                <p class="product-desc">Cachapa de maíz tierno, queso de mano y 200 gramos de cochino frito, aguacate.</p>
+                <span class="product-price">$ 21.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('ca2', -1)" id="btn-minus-ca2" disabled>-</button>
+                <span class="qty-display" id="qty-ca2">0</span>
+                <button class="btn-qty" onclick="updateQty('ca2', 1)">+</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PATACONES -->
+    <div id="section-patacon">
+        <img src="img/patacon-banner.jpg" class="section-banner">
+        <h2 class="section-title">Patacones</h2>
+        <div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-pa1">Sensillo con Carne</p>
+                <p class="product-desc">Doble plátano, carne desmechada, jamón, tocineta, queso, salsa.</p>
+                <span class="product-price">$ 20.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('pa1', -1)" id="btn-minus-pa1" disabled>-</button>
+                <span class="qty-display" id="qty-pa1">0</span>
+                <button class="btn-qty" onclick="updateQty('pa1', 1)">+</button>
+            </div>
+        </div>
+	<div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-pa2">Sensillo con Pollo</p>
+                <p class="product-desc">Doble plátano, pollo desmechado, jamón, tocineta, queso, salsa.</p>
+                <span class="product-price">$ 20.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('pa2', -1)" id="btn-minus-pa2" disabled>-</button>
+                <span class="qty-display" id="qty-pa2">0</span>
+                <button class="btn-qty" onclick="updateQty('pa2', 1)">+</button>
+            </div>
+        </div>
+	<div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-pa3">Patacón Mixto</p>
+                <p class="product-desc">Doble plátano, ensalada carne desmechada y pollo desmechado jamón, tocineta, queso, salsas.</p>
+                <span class="product-price">$ 28.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('pa3', -1)" id="btn-minus-pa3" disabled>-</button>
+                <span class="qty-display" id="qty-pa3">0</span>
+                <button class="btn-qty" onclick="updateQty('pa3', 1)">+</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SHAWARMA -->
+    <div id="section-shawarma">
+        <img src="img/shawarma-banner.jpg" class="section-banner">
+        <h2 class="section-title">Shawarma</h2>
+        <div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-sh1">Sensillo con Carne</p>
+                <p class="product-desc">Ensalada, tomate, lechuga, cebolla, carne, ripio, tocineta, jamón, maicitos, queso, salsas, pan árabe artesanal.</p>
+                <span class="product-price">$ 20.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('sh1', -1)" id="btn-minus-sh1" disabled>-</button>
+                <span class="qty-display" id="qty-sh1">0</span>
+                <button class="btn-qty" onclick="updateQty('sh1', 1)">+</button>
+            </div>
+        </div>
+	<div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-sh2">Sensillo con Pollo</p>
+                <p class="product-desc">Ensalada, tomate, lechuga, cebolla, pollo, ripio, tocineta, jamón, maicitos, queso, salsas, pan árabe artesanal.</p>
+                <span class="product-price">$ 20.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('sh2', -1)" id="btn-minus-sh2" disabled>-</button>
+                <span class="qty-display" id="qty-sh2">0</span>
+                <button class="btn-qty" onclick="updateQty('sh2', 1)">+</button>
+            </div>
+        </div>
+	<div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-sh3">Shawarma Mixto</p>
+                <p class="product-desc">Doble plátano, ensalada carne desmechada y pollo desmechado jamón, tocineta, queso, salsas.</p>
+                <span class="product-price">$ 28.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('sh3', -1)" id="btn-minus-sh3" disabled>-</button>
+                <span class="qty-display" id="qty-sh3">0</span>
+                <button class="btn-qty" onclick="updateQty('sh3', 1)">+</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- EMPANADAS -->
+    <div id="section-empanada">
+        <img src="img/empanada-banner.jpg" class="section-banner">
+        <h2 class="section-title">Empanadas</h2>
+        <div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-emp1">Jamón y queso</p>
+                <span class="product-price">$ 5.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('emp1', -1)" id="btn-minus-emp1" disabled>-</button>
+                <span class="qty-display" id="qty-emp1">0</span>
+                <button class="btn-qty" onclick="updateQty('emp1', 1)">+</button>
+            </div>
+        </div>
+	<div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-emp2">Pollo</p>
+                <span class="product-price">$ 5.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('emp2', -1)" id="btn-minus-emp2" disabled>-</button>
+                <span class="qty-display" id="qty-emp2">0</span>
+                <button class="btn-qty" onclick="updateQty('emp2', 1)">+</button>
+            </div>
+        </div>
+	<div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-emp3">Pollo con queso</p>
+                <span class="product-price">$ 6.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('emp3', -1)" id="btn-minus-emp3" disabled>-</button>
+                <span class="qty-display" id="qty-emp3">0</span>
+                <button class="btn-qty" onclick="updateQty('emp3', 1)">+</button>
+            </div>
+        </div>
+	<div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-emp4">Carne molida</p>
+                <span class="product-price">$ 5.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('emp4', -1)" id="btn-minus-emp4" disabled>-</button>
+                <span class="qty-display" id="qty-emp4">0</span>
+                <button class="btn-qty" onclick="updateQty('emp4', 1)">+</button>
+            </div>
+        </div>
+	<div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-emp5">Carne molida con queso</p>
+                <span class="product-price">$ 6.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('emp5', -1)" id="btn-minus-emp5" disabled>-</button>
+                <span class="qty-display" id="qty-emp5">0</span>
+                <button class="btn-qty" onclick="updateQty('emp5', 1)">+</button>
+            </div>
+        </div>
+	<div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-emp6">Carne mechada</p>
+                <span class="product-price">$ 5.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('emp6', -1)" id="btn-minus-emp6" disabled>-</button>
+                <span class="qty-display" id="qty-emp6">0</span>
+                <button class="btn-qty" onclick="updateQty('emp6', 1)">+</button>
+            </div>
+        </div>
+	<div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-emp7">Carne mechada con queso</p>
+                <span class="product-price">$ 6.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('emp7', -1)" id="btn-minus-emp7" disabled>-</button>
+                <span class="qty-display" id="qty-emp7">0</span>
+                <button class="btn-qty" onclick="updateQty('emp7', 1)">+</button>
+            </div>
+        </div>
+	<div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-emp8">Cordon bleu</p>
+                <span class="product-price">$ 6.500</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('emp8', -1)" id="btn-minus-emp8" disabled>-</button>
+                <span class="qty-display" id="qty-emp8">0</span>
+                <button class="btn-qty" onclick="updateQty('emp8', 1)">+</button>
+            </div>
+        </div>
+	<div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-emp9">Pabellón</p>
+                <span class="product-price">$ 7.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('emp9', -1)" id="btn-minus-emp9" disabled>-</button>
+                <span class="qty-display" id="qty-emp9">0</span>
+                <button class="btn-qty" onclick="updateQty('emp9', 1)">+</button>
+            </div>
+        </div>
+	
+    </div>
+
+    <!-- CLUBHOUSE -->
+    <div id="section-clubhouse">
+        <img src="img/clubhouse-banner.jpg" class="section-banner">
+        <h2 class="section-title">Clubhouse</h2>
+        <div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-cbh1">Clubhouse</p>
+                <p class="product-desc">Pan de sándwich, 1 capa de tomate, lechuga, cebolla, 2 capas jamón y queso, 1 capa de tocineta y huevo, 1 capa de carne o pollo, porción de papas francesa, todas las salsas.</p>
+                <span class="product-price">$ 23.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('cbh1', -1)" id="btn-minus-cbh1" disabled>-</button>
+                <span class="qty-display" id="qty-cbh1">0</span>
+                <button class="btn-qty" onclick="updateQty('cbh1', 1)">+</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- BEBIDAS PERSONALES -->
+    <div id="section-bebidapersonal">
+        <img src="img/bebidapersonal-banner.jpg" class="section-banner">
+        <h2 class="section-title">Bebidas Personales</h2>
+        <div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-bp1">Quatro</p>
+                <span class="product-price">$ 3.500</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('bp1', -1)" id="btn-minus-bp1" disabled>-</button>
+                <span class="qty-display" id="qty-bp1">0</span>
+                <button class="btn-qty" onclick="updateQty('bp1', 1)">+</button>
+            </div>
+        </div>
+	<div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-bp2">Premio</p>
+                <span class="product-price">$ 3.500</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('bp2', -1)" id="btn-minus-bp2" disabled>-</button>
+                <span class="qty-display" id="qty-bp2">0</span>
+                <button class="btn-qty" onclick="updateQty('bp2', 1)">+</button>
+            </div>
+        </div>
+	<div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-bp3">Jugo del valle</p>
+                <span class="product-price">$ 2.500</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('bp3', -1)" id="btn-minus-bp3" disabled>-</button>
+                <span class="qty-display" id="qty-bp3">0</span>
+                <button class="btn-qty" onclick="updateQty('bp3', 1)">+</button>
+            </div>
+        </div>
+	<div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-bp4">Sprite</p>
+                <span class="product-price">$ 3.5000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('bp4', -1)" id="btn-minus-bp4" disabled>-</button>
+                <span class="qty-display" id="qty-bp4">0</span>
+                <button class="btn-qty" onclick="updateQty('bp4', 1)">+</button>
+            </div>
+        </div>
+	<div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-bp5">Coca cola</p>
+                <span class="product-price">$ 4.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('bp5', -1)" id="btn-minus-bp5" disabled>-</button>
+                <span class="qty-display" id="qty-bp5">0</span>
+                <button class="btn-qty" onclick="updateQty('bp5', 1)">+</button>
+            </div>
+        </div>
+	<div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-bp6">Maltin polar</p>
+                <span class="product-price">$ 6.500</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('bp6', -1)" id="btn-minus-bp6" disabled>-</button>
+                <span class="qty-display" id="qty-bp6">0</span>
+                <button class="btn-qty" onclick="updateQty('bp6', 1)">+</button>
+            </div>
+        </div>
+	<div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-bp7">Frescolita</p>
+                <span class="product-price">$ 8.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('bp7', -1)" id="btn-minus-bp7" disabled>-</button>
+                <span class="qty-display" id="qty-bp7">0</span>
+                <button class="btn-qty" onclick="updateQty('bp7', 1)">+</button>
+            </div>
+        </div>
+	<div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-bp8">Polarcita</p>
+                <span class="product-price">$ 7.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('bp8', -1)" id="btn-minus-bp8" disabled>-</button>
+                <span class="qty-display" id="qty-bp8">0</span>
+                <button class="btn-qty" onclick="updateQty('bp8', 1)">+</button>
+            </div>
+        </div>
+	<div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-bp9">Polar light</p>
+                <span class="product-price">$ 6.500</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('bp9', -1)" id="btn-minus-bp9" disabled>-</button>
+                <span class="qty-display" id="qty-bp9">0</span>
+                <button class="btn-qty" onclick="updateQty('bp9', 1)">+</button>
+            </div>
+        </div>
+	<div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-bp9">Zulia</p>
+                <span class="product-price">$ 6.500</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('bp9', -1)" id="btn-minus-bp9" disabled>-</button>
+                <span class="qty-display" id="qty-bp9">0</span>
+                <button class="btn-qty" onclick="updateQty('bp9', 1)">+</button>
+            </div>
+        </div>
+	<div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-bp9">Solera verde/azul</p>
+                <span class="product-price">$ 7.500</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('bp9', -1)" id="btn-minus-bp9" disabled>-</button>
+                <span class="qty-display" id="qty-bp9">0</span>
+                <button class="btn-qty" onclick="updateQty('bp9', 1)">+</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- BEBIDAS FAMILIARES -->
+    <div id="section-bebidafamiliar">
+        <img src="img/bebidafamiliar-banner.jpg" class="section-banner">
+        <h2 class="section-title">Bebidas Familiares (1.5 lt)</h2>
+        <div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-bf1">Coca cola</p>
+                <span class="product-price">$ 7.500</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('bf1', -1)" id="btn-minus-bf1" disabled>-</button>
+                <span class="qty-display" id="qty-bf1">0</span>
+                <button class="btn-qty" onclick="updateQty('bf1', 1)">+</button>
+            </div>
+        </div>
+	<div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-bf2">Premio</p>
+                <span class="product-price">$ 6.500</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('bf2', -1)" id="btn-minus-bf2" disabled>-</button>
+                <span class="qty-display" id="qty-bf2">0</span>
+                <button class="btn-qty" onclick="updateQty('bf2', 1)">+</button>
+            </div>
+        </div>
+	<div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-bf3">Quatro</p>
+                <span class="product-price">$ 6.500</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('bf3', -1)" id="btn-minus-bf3" disabled>-</button>
+                <span class="qty-display" id="qty-bf3">0</span>
+                <button class="btn-qty" onclick="updateQty('bf3', 1)">+</button>
+            </div>
+        </div>
+	<div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-bf4">Sprite</p>
+                <span class="product-price">$ 6.5000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('bf4', -1)" id="btn-minus-bf4" disabled>-</button>
+                <span class="qty-display" id="qty-bf4">0</span>
+                <button class="btn-qty" onclick="updateQty('bf4', 1)">+</button>
+            </div>
+        </div>
+	<div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-bf5">Jugo del valle</p>
+                <span class="product-price">$ 5.500</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('bf5', -1)" id="btn-minus-bf5" disabled>-</button>
+                <span class="qty-display" id="qty-bf5">0</span>
+                <button class="btn-qty" onclick="updateQty('bf5', 1)">+</button>
+            </div>
+        </div>
+	<div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-bf6">Maltin polar</p>
+                <span class="product-price">$ 20.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('bf6', -1)" id="btn-minus-bf6" disabled>-</button>
+                <span class="qty-display" id="qty-bf6">0</span>
+                <button class="btn-qty" onclick="updateQty('bf6', 1)">+</button>
+            </div>
+        </div>
+	<div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-bf7">Golden manzana</p>
+                <span class="product-price">$ 20.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('bf7', -1)" id="btn-minus-bf7" disabled>-</button>
+                <span class="qty-display" id="qty-bf7">0</span>
+                <button class="btn-qty" onclick="updateQty('bf7', 1)">+</button>
+            </div>
+        </div>
+	<div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-bf8">Golden naranja</p>
+                <span class="product-price">$ 20.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('bf8', -1)" id="btn-minus-bf8" disabled>-</button>
+                <span class="qty-display" id="qty-bf8">0</span>
+                <button class="btn-qty" onclick="updateQty('bf8', 1)">+</button>
+            </div>
+        </div>
+	<div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-bf9">Rico malt</p>
+                <span class="product-price">$ 20.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('bf9', -1)" id="btn-minus-bf9" disabled>-</button>
+                <span class="qty-display" id="qty-bf9">0</span>
+                <button class="btn-qty" onclick="updateQty('bf9', 1)">+</button>
+            </div>
+        </div>
+	<div class="product-card">
+            <div class="product-info">
+                <p class="product-name" id="name-bf9">Chicha Don Simón</p>
+                <span class="product-price">$ 20.000</span>
+            </div>
+            <div class="controls">
+                <button class="btn-qty" onclick="updateQty('bf9', -1)" id="btn-minus-bf9" disabled>-</button>
+                <span class="qty-display" id="qty-bf9">0</span>
+                <button class="btn-qty" onclick="updateQty('bf9', 1)">+</button>
             </div>
         </div>
     </div>
@@ -289,12 +933,77 @@
 
     <script>
         const products = {
+            // PERROS
             p1: { name: "Perro Sencillo", price: 9000, qty: 0 },
             p2: { name: "Perro Especial", price: 12000, qty: 0 },
             p3: { name: "Perro Full equipo", price: 16000, qty: 0 },
+            // HAMBURGUESAS
             h1: { name: "Hamburguesa Sencilla", price: 13000, qty: 0 },
             h2: { name: "Hamburguesa Pollo", price: 13000, qty: 0 },
-            h3: { name: "Hamburguesa Mixta", price: 20000, qty: 0 }
+            h3: { name: "Hamburguesa Mixta", price: 20000, qty: 0 },
+            h4: { name: "Hamburguesa Especial", price: 22000, qty: 0 },
+            h5: { name: "Chuleta", price: 19000, qty: 0 },
+            h6: { name: "Hamburguesa Full equipo", price: 28000, qty: 0 },
+            // SALCHIPAPAS
+            s1: { name: "Salchipapa Sencilla Peq.", price: 8000, qty: 0 },
+            s2: { name: "Salchipapa Sencilla Gde.", price: 14000, qty: 0 },
+	    s3: { name: "Salchipapa Gratinada Peq.", price: 9000, qty: 0 },
+	    s4: { name: "Salchipapa Gratinada Gde.", price: 15000, qty: 0 },
+	    s5: { name: "Salchipapa Especial Peq.", price: 10000, qty: 0 },
+	    s6: { name: "Salchipapa Especial Gde.", price: 17000, qty: 0 },
+	    s7: { name: "Salchicarne Peq.", price: 18000, qty: 0 },
+	    s8: { name: "Salchicarne Gde.", price: 30000, qty: 0 },
+	    // PEPITOS
+            pep1: { name: "Pepito", price: 28000, qty: 0 },
+            pep2: { name: "Mini Pepito", price: 15000, qty: 0 },
+	    // CACHAPAS
+	    ca1: { name: "Cachapa con Queso", price: 15000, qty: 0 },
+	    ca2: { name: "Cachapa con Cerdo", price: 21000, qty: 0 },
+	    // PATACONES
+	    pa1: { name: "Patacón sencillo con Carne", price: 20000, qty: 0 },
+	    pa2: { name: "Patacón sencillo con Pollo", price: 20000, qty: 0 },
+	    pa3: { name: "Patacón Mixto", price: 28000, qty: 0 },
+	    // SHAWARMA
+	    sh1: { name: "Shawarma sencillo con Carne", price: 20000, qty: 0 },
+	    sh2: { name: "Shawarma sencillo con Pollo", price: 20000, qty: 0 },
+	    sh3: { name: "Shawarma Mixto", price: 28000, qty: 0 },
+	    // EMPANADA
+	    emp1: { name: "Empanada de jamón y queso", price: 5000, qty: 0 },
+	    emp2: { name: "Empanada de pollo", price: 5000, qty: 0 },
+	    emp3: { name: "Empanada de pollo con queso", price: 6000, qty: 0 },
+	    emp4: { name: "Empanada de carne molida", price: 5000, qty: 0 },
+	    emp5: { name: "Empanada de carne molida con queso", price: 6000, qty: 0 },
+	    emp6: { name: "Empanada de carne mechada", price: 5000, qty: 0 },
+	    emp7: { name: "Empanada de carne mechada con queso", price: 6000, qty: 0 },
+	    emp8: { name: "Empanada de cordon bleu", price: 6500, qty: 0 },
+	    emp9: { name: "Empanada de pabellón", price: 7000, qty: 0 },
+	    // CLUBHOUSE
+            cbh1: { name: "Clubhose", price: 23000, qty: 0 },
+	    // BEBIDA PERSONAL
+	    bp1: { name: "Quatro", price: 3500, qty: 0 },
+	    bp2: { name: "Premio", price: 3500, qty: 0 },
+	    bp3: { name: "Jugo del valle", price: 2500, qty: 0 },
+	    bp4: { name: "Sprite", price: 3500, qty: 0 },
+	    bp5: { name: "Coca cola", price: 4000, qty: 0 },
+	    bp6: { name: "Maltin polar", price: 6500, qty: 0 },
+	    bp7: { name: "Frescolita", price: 8000, qty: 0 },
+	    bp8: { name: "Polarcita", price: 7000, qty: 0 },
+	    bp9: { name: "Polar light", price: 6500, qty: 0 },
+	    bp10: { name: "Zulia", price: 6500, qty: 0 },
+	    bp11: { name: "Solera verde/azul", price: 7000, qty: 0 },
+	    // BEBIDA FAMILIAR
+	    bf1: { name: "Coca cola 1.5 lt", price: 7500, qty: 0 },
+	    bf2: { name: "Premio 1.5 lt", price: 6500, qty: 0 },
+	    bf3: { name: "Quatro 1.5 lt", price: 6500, qty: 0 },
+	    bf4: { name: "Sprite 1.5 lt", price: 6500, qty: 0 },
+	    bf5: { name: "Jugo del valle 1.5 lt", price: 5500, qty: 0 },
+	    bf6: { name: "Maltin polar 1.5 lt", price: 20000, qty: 0 },
+	    bf7: { name: "Golden manzana 1.5 lt", price: 20000, qty: 0 },
+	    bf8: { name: "Golden naranja 1.5 lt", price: 20000, qty: 0 },
+	    bf9: { name: "Riko malt 1.5 lt", price: 20000, qty: 0 },
+	    bf10: { name: "Chicha don simón 1.5 lt", price: 20000, qty: 0 },
+            // PROMOCIONES
+            prom1: { name: "Promo 2 Hamburguesas", price: 17000, qty: 0 }            
         };
 
         function toggleMenu() {
@@ -309,14 +1018,13 @@
 
         function updateQty(id, change) {
             const p = products[id];
+            if(!p) return;
             p.qty += change;
             if (p.qty < 0) p.qty = 0;
 
-            // UI Updates
             document.getElementById(`qty-${id}`).innerText = p.qty;
             document.getElementById(`btn-minus-${id}`).disabled = (p.qty === 0);
             
-            // Bold highlight
             const nameEl = document.getElementById(`name-${id}`);
             if (p.qty > 0) nameEl.classList.add('active');
             else nameEl.classList.remove('active');
@@ -334,7 +1042,11 @@
                 if (p.qty > 0) {
                     const subtotal = p.price * p.qty;
                     total += subtotal;
-                    html += `<p>${p.name} x ${p.qty}, subtotal: $ ${subtotal.toLocaleString()}</p>`;
+                    html += `
+                    <div class="cart-item-row">
+                        <strong>${p.name} x ${p.qty}</strong>
+                        <span class="cart-item-sub">subtotal: $ ${subtotal.toLocaleString()}</span>
+                    </div>`;
                 }
             });
 
@@ -351,7 +1063,7 @@
                 if (p.qty > 0) {
                     const subtotal = p.price * p.qty;
                     total += subtotal;
-                    orderText += `- ${p.name} x ${p.qty}, subtotal: $ ${subtotal.toLocaleString()}%0A`;
+                    orderText += `- ${p.name} x ${p.qty}%0A  subtotal: $ ${subtotal.toLocaleString()}%0A`;
                     hasItems = true;
                 }
             });
@@ -361,33 +1073,28 @@
                 return;
             }
 
-            orderText += `Total: $ ${total.toLocaleString()}%0A`;
+            orderText += `%0A*Total: $ ${total.toLocaleString()}*%0A`;
             orderText += "Dirección: ";
 
             const phoneNumber = "573161512216"; 
             window.open(`https://wa.me/${phoneNumber}?text=${orderText}`, '_blank');
         }
 
-	async function shareApp() {
-	    const shareData = {
-	        title: 'Menú Interactivo | Ricuras April',
-	        text: 'Ricuras April. Haz tu pedido por WhatsApp:',
-	        url: window.location.origin + window.location.pathname
-	    };
-
-	    try {
-	        if (navigator.share) {
-	            await navigator.share(shareData);
-	        } else {
-	            // Alternativa si el navegador no soporta compartir (PC)
-	            await navigator.clipboard.writeText(window.location.href);
-	            alert("Enlace copiado al portapapeles");
-	        }
-	    } catch (err) {
-	        console.log("Error al compartir: ", err);
-	    }
-	}
-
+        async function shareApp() {
+            const shareData = {
+                title: 'Menú Interactivo | Ricuras April',
+                text: 'Ricuras April. Haz tu pedido por WhatsApp:',
+                url: window.location.origin + window.location.pathname
+            };
+            try {
+                if (navigator.share) {
+                    await navigator.share(shareData);
+                } else {
+                    await navigator.clipboard.writeText(window.location.href);
+                    alert("Enlace copiado al portapapeles");
+                }
+            } catch (err) { console.log("Error al compartir: ", err); }
+        }
     </script>
 </body>
 </html>
