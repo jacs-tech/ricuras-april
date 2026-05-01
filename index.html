@@ -151,13 +151,24 @@
 	}
 
         .cart-float {
-            position: fixed; bottom: 80px; right: 20px;
+            position: fixed; bottom: 15px; right: 20px;
             background: var(--primary); color: white;
             width: 55px; height: 55px; border-radius: 50%;
+	    background-color: white;
             display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 1001;
+            box-shadow: 0 4px 10px rgba(0,0,0,1); z-index: 1001;
             cursor: pointer; border: none; font-size: 24px;	    
         }
+
+	.cart-float:active {
+	    transform: scale(1.1);
+	}
+
+	.cart-float img {
+	    width: 100%;
+	    height: 100%;
+	    object-fit: cover; /* Ajusta el PNG circularmente */
+	}
 
         #cart-modal {
 	    /* Mantén tus estilos anteriores y añade/cambia estos: */
@@ -190,39 +201,29 @@
         .cart-item-row { margin-bottom: 12px; border-bottom: 1px solid #f0f0f0; padding-bottom: 5px; }
         .cart-item-sub { font-size: 0.85rem; color: #666; display: block; margin-top: 2px; }
 
-        .wa-float {
-            position: fixed; bottom: 15px; right: 20px;
-            background: #25d366; width: 55px; height: 55px;
-            border-radius: 50%; display: flex; align-items: center;
-            justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            z-index: 1001; cursor: pointer;
-        }
-        .wa-float img { width: 30px; }
-
 	.modal-overlay {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.8);
-    display: flex; justify-content: center; align-items: center;
-    z-index: 1000;
-}
-.modal-content {
-    background: white; padding: 20px; border-radius: 15px;
-    width: 90%; max-width: 400px; font-family: sans-serif;
-}
-.modal-content input, .modal-content textarea {
-    width: 100%; margin: 10px 0; padding: 10px;
-    border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box;
-}
-.btn-geo {
-    background: #f0f0f0; border: 1px dashed #333;
-    width: 100%; padding: 10px; cursor: pointer; border-radius: 8px;
-    margin-bottom: 15px; font-weight: bold;
-}
-.modal-actions { display: flex; gap: 10px; }
-.btn-send { background: #25d366; color: white; border: none; flex: 2; padding: 12px; border-radius: 8px; font-weight: bold; }
-.btn-cancel { background: #ccc; border: none; flex: 1; padding: 12px; border-radius: 8px; }	
-
+	    position: fixed;
+	    top: 0; left: 0; width: 100%; height: 100%;
+	    background: rgba(0,0,0,0.8);
+	    display: flex; justify-content: center; align-items: center;
+	    z-index: 1000;
+	}
+	.modal-content {
+	    background: white; padding: 20px; border-radius: 15px;
+	    width: 90%; max-width: 400px; font-family: sans-serif;
+	}
+	.modal-content input, .modal-content textarea {
+	    width: 100%; margin: 10px 0; padding: 10px;
+	    border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box;
+	}
+	.btn-geo {
+	    background: #f0f0f0; border: 1px dashed #333;
+	    width: 100%; padding: 10px; cursor: pointer; border-radius: 8px;
+	    margin-bottom: 15px; font-weight: bold;
+	}
+	.modal-actions { display: flex; gap: 10px; }
+	.btn-send { background: #25d366; color: white; border: none; flex: 2; padding: 12px; border-radius: 8px; font-weight: bold; }
+	.btn-cancel { background: #ccc; border: none; flex: 1; padding: 12px; border-radius: 8px; }	
     </style>
 </head>
 <body>
@@ -1084,17 +1085,20 @@
     </div>
 
     <!-- CARRITO FLOTANTE -->
-    <button class="cart-float" onclick="toggleCart()">🛒</button>
+    <button class="cart-float" onclick="toggleCart()">
+	<img src="img/cart.png" alt="Carrito">
+    </button>
+
     <div id="cart-modal">
         <h3>Tu Pedido</h3>
         <div id="cart-items">El carrito está vacío</div>
         <hr>
         <strong>Total: <span id="total-price">$ 0</span></strong>
-    </div>
-
-    <!-- WHATSAPP -->
-    <div class="wa-float" onclick="abrirModal()">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA">
+<!-- Botón de WhatsApp integrado en el carrito -->
+    <button class="btn-whatsapp-cart" onclick="abrirModal()" style="background-color: #25d366; color: white; border: none; padding: 12px; border-radius: 8px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 15px; cursor: pointer; font-family: sans-serif; font-weight: bold;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA" style="width: 20px; height: 20px;">
+        Pedir por WhatsApp
+    </button>
     </div>
 
     <script>
@@ -1233,12 +1237,15 @@
 	    if (!tieneProductos) {
 	        alert("Agrega productos al carrito primero");
 	        return; 
-	    }	
+	    }		
+	    document.getElementById('cart-modal').classList.remove('show');
 	    document.getElementById('delivery-modal').style.display = 'flex';
+	    
 	}
 
 	function cerrarModal() {
 	    document.getElementById('delivery-modal').style.display = 'none';
+	    document.getElementById('cart-modal').classList.add('show');
 	}
 
 	function obtenerGeo() {
@@ -1285,6 +1292,9 @@
 
 	    const mensajeFinal = orderText + infoEntrega;
     
+	    document.getElementById('delivery-modal').style.display = 'none';
+	    document.getElementById('cart-modal').classList.remove('show');
+
 	    // Abrir WhatsApp con el mensaje formateado
 	    window.open(`https://wa.me/573161512216?text=${mensajeFinal}`);
     
