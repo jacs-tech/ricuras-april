@@ -1278,9 +1278,10 @@
             if (p.qty > 0) nameEl.classList.add('active');
             else nameEl.classList.remove('active');
 
-	    if (navigator.vibrate) {
-	        navigator.vibrate(10); 
-	    }	
+	    // This is a direct result of a click, so it should work
+	    if ("vibrate" in navigator) {
+	        navigator.vibrate(200); // Try 50ms, 10ms might be too subtle to feel
+	    }
 
             renderCart();
 	    gestionarVisibilidadReset();
