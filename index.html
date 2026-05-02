@@ -1348,6 +1348,16 @@
 		resetProductNamesStyle();
 		deshabilitarBotonesMenos();
 		gestionarVisibilidadReset();
+
+		// Auto-hide modal after 3 seconds (3000 milliseconds)
+	        setTimeout(() => {
+	            const modal = document.getElementById('cart-modal');
+	            if (modal) {
+	                // Use the same function you use to close the cart normally
+	                // or toggle the 'show' class
+	                modal.classList.remove('show');
+	            }
+	        }, 2500);
 	    }
 	}
 
