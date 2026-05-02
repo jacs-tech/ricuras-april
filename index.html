@@ -42,12 +42,12 @@
         .dropdown-content {
             display: none; position: fixed; top: 60px; left: 0;
             background: var(--white); width: 220px;
-            box-shadow: 2px 2px 10px rgba(0,0,0,0.1); z-index: 999;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.5); z-index: 999;
             max-height: 80vh; overflow-y: auto;
         }
         .dropdown-content a {
             display: block; padding: 12px 20px;
-            text-decoration: none; color: var(--dark); border-bottom: 1px solid #eee; font-size: 0.9rem;
+            text-decoration: none; color: var(--dark); border-bottom: 1px solid #eee; font-size: 1rem; font-weight: 500;
         }
 
         .hero { 
@@ -1157,7 +1157,7 @@
 
     <!-- CARRITO FLOTANTE -->
     <button class="cart-float" onclick="toggleCart()">
-	<img src="img/cart.png" alt="Carrito">
+	<img id="cart-icon-img" src="img/cart-empty.png" alt="Carrito">
     </button>
 
     <div id="cart-modal">
@@ -1269,7 +1269,7 @@
             const p = products[id];
             if(!p) return;
 
-	// --- Logic for different sounds ---
+	    // --- Logic for different sounds ---
 	    let sound;
 	    if (change > 0) {
 	        // Sound for adding (+)
@@ -1294,9 +1294,14 @@
             if (p.qty > 0) nameEl.classList.add('active');
             else nameEl.classList.remove('active');
 
-	    // This is a direct result of a click, so it should work
-	    if ("vibrate" in navigator) {
-	        navigator.vibrate(200); // Try 50ms, 10ms might be too subtle to feel
+	    // --- Dynamic Cart Icon Logic ---
+	    const totalQty = Object.values(products).reduce((sum, item) => sum + item.qty, 0);
+	    const cartImg = document.getElementById('cart-icon-img');
+
+	    if (totalQty > 0) {
+	        cartImg.src = "img/cart-loaded.png"; // Icon when items are present
+	    } else {
+	        cartImg.src = "img/cart-empty.png"; // Icon when cart is empty
 	    }
 
             renderCart();
@@ -1334,6 +1339,9 @@
 
 		// Reset the visual counters on the product page
 	        resetVisualCounters();
+
+		const cartImg = document.getElementById('cart-icon-img');
+		cartImg.src = "img/cart-empty.png"; // Icon when cart is empty
 
 	        // Trigger your existing function that refreshes the list and total
 		renderCart(); 
