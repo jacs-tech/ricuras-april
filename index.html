@@ -1269,20 +1269,20 @@
             const p = products[id];
             if(!p) return;
 
-// --- Logic for different sounds ---
-    let sound;
-    if (change > 0) {
-        // Sound for adding (+)
-        sound = document.getElementById('sound-add');
-    } else if (change < 0) {
-        // Sound for subtracting (-)
-        sound = document.getElementById('sound-sub');
-    }
+	// --- Logic for different sounds ---
+	    let sound;
+	    if (change > 0) {
+	        // Sound for adding (+)
+	        sound = document.getElementById('sound-add');
+	    } else if (change < 0) {
+	        // Sound for subtracting (-)
+	        sound = document.getElementById('sound-sub');
+	    }
 
-    if (sound) {
-        sound.currentTime = 0; // Reset for rapid clicking
-        sound.play().catch(e => console.log("Audio play blocked:", e));
-    }
+	    if (sound) {
+	        sound.currentTime = 0; // Reset for rapid clicking
+	        sound.play().catch(e => console.log("Audio play blocked:", e));
+	    }
 
             p.qty += change;
             if (p.qty < 0) p.qty = 0;
@@ -1367,10 +1367,15 @@
 
 	function deshabilitarBotonesMenos() {
 	    // Selects all elements where the ID attribute CONTAINS 'btn-minus'
-	    const botonesMenos = document.querySelectorAll('[id*="btn-minus"]');
-    
+	    const botonesMenos = document.querySelectorAll('[id*="btn-minus"]');	    
+	    let sound;
+
 	    botonesMenos.forEach(boton => {
 	        boton.disabled = true;
+		
+		// Substracting sound
+		sound = document.getElementById('sound-sub');
+		sound.play().catch(e => console.log("Audio play blocked:", e));
         
 	        // Visual feedback to show they are inactive
 	        boton.style.opacity = "1";
