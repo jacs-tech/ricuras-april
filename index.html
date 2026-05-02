@@ -141,7 +141,7 @@
         .controls { display: flex; align-items: center; gap: 10px; margin-left: 15px; }
         .btn-qty { 
             width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--primary);
-            background: var(--white); color: var(--primary); font-weight: bold; cursor: pointer;
+            background: var(--white); color: var(--primary); font-weight: bold; cursor: pointer; font-size: 1.4rem;
         }
         .btn-qty:disabled { border-color: #ccc; color: #ccc; }
         .qty-display { min-width: 20px; text-align: center; font-weight: 600; }
@@ -1277,6 +1277,10 @@
             const nameEl = document.getElementById(`name-${id}`);
             if (p.qty > 0) nameEl.classList.add('active');
             else nameEl.classList.remove('active');
+
+	    if (navigator.vibrate) {
+	        navigator.vibrate(10); 
+	    }	
 
             renderCart();
 	    gestionarVisibilidadReset();
