@@ -1268,6 +1268,22 @@
         function updateQty(id, change) {
             const p = products[id];
             if(!p) return;
+
+// --- Logic for different sounds ---
+    let sound;
+    if (change > 0) {
+        // Sound for adding (+)
+        sound = document.getElementById('sound-add');
+    } else if (change < 0) {
+        // Sound for subtracting (-)
+        sound = document.getElementById('sound-sub');
+    }
+
+    if (sound) {
+        sound.currentTime = 0; // Reset for rapid clicking
+        sound.play().catch(e => console.log("Audio play blocked:", e));
+    }
+
             p.qty += change;
             if (p.qty < 0) p.qty = 0;
 
@@ -1616,5 +1632,8 @@
             </div>
         </div>
     </div>
+
+    <audio id="sound-add" src="snd/tic-add.wav" preload="auto"></audio>
+    <audio id="sound-sub" src="snd/tic-sub.wav" preload="auto"></audio>
 </body>
 </html>
