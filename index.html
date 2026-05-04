@@ -129,7 +129,13 @@
 	}
 
         .section-banner { width: 100%; height: 150px; object-fit: cover; margin-top: 10px; }
-        .section-title { padding: 15px 20px; background: var(--dark); color: var(--white); margin: 0; }
+        .section-title { 
+	    padding: 15px 20px; 
+	    background: var(--dark); 
+	    color: var(--white); 
+	    margin: 0;
+	    font-weight: 600; 
+	}
 
         .product-card {
             background: var(--white); margin: 10px; padding: 15px;
@@ -205,15 +211,7 @@
 	#reset-cart {
 	    /* Estética del botón */
 	    background-color: #ffffff;
-	    box-shadow: 2px 2px 10px rgba(0,0,0,0.5); z-index: 999;
-	    color: #666;
-	    font-weight: bold;
-	    font-size: 1.2rem;
-	    border: 0px;
-	    padding: 6px 12px;
-	    border-radius: 6px;	    
-	    cursor: pointer;
-	    z-index: 1002; /* Un nivel por encima del contenido del carrito */
+	    color: #666;	    
     	    /* Transición para que no aparezca de golpe */
 	    transition: background-color 0.2s ease; 
 	}
@@ -224,7 +222,21 @@
 
 	#btn-whatsapp-cart {
 	    /* Estética del botón */
-	    box-shadow: 2px 2px 10px rgba(0,0,0,0.5); z-index: 999;	     
+	    color: white;	     	
+	}
+
+	#reset-cart, #btn-whatsapp-cart {
+	    /* Estética del botnes Reset y WhatsApp, estilos compartidos */
+	    z-index: 1002; /* Un nivel por encima del contenido del carrito */	   
+	    font-size: 1.2rem;
+	    border: none;
+	    border-radius: 8px;	    
+	    box-shadow: 2px 2px 10px rgba(0,0,0,0.3); z-index: 999;
+	    font-family: sans-serif; 
+	    font-weight: bold; 
+	    font-size: 1.2rem;
+	    padding: 12px;
+	    cursor: pointer; 	
 	}
 
         .cart-item-row { margin-bottom: 12px; border-bottom: 1px solid #f0f0f0; padding-bottom: 5px; }
@@ -1173,12 +1185,12 @@
 	<div style="display: flex; gap: 10px; margin-top: 15px;">
         
         <!-- Reset Button (Now on the left) -->
-        <button id="reset-cart" onclick="resetPedido()" border: none; padding: 12px; border-radius: 8px; cursor: pointer;  flex: 1;">
+        <button id="reset-cart" onclick="resetPedido()" flex: 1;">
             Vaciar 🗑️
         </button>
 
         <!-- WhatsApp Button (Now on the right) -->
-        <button id="btn-whatsapp-cart" onclick="abrirModal()" style="background-color: #25a135; color: white; border: none; padding: 12px; border-radius: 8px; flex: 3; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; font-family: sans-serif; font-weight: 500; font-size: 1.2rem;">
+        <button id="btn-whatsapp-cart" onclick="abrirModal()" style="background-color: #25a135; flex: 3; display: flex; align-items: center; justify-content: center; gap: 10px; ">
             <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA" style="width: 25px; height: 25px;">
             Pedir
         </button>        
