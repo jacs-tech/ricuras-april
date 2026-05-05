@@ -308,12 +308,15 @@
 
     <header>
         <button class="burger-menu" onclick="toggleMenu()">☰</button>
-        <div class="store-name">RICURAS APRIL</div>
+        <div class="store-name">
+  	    <a href="#" style="text-decoration: none; color: inherit;">RICURAS APRIL</a>
+	</div>
         <button class="share-btn" onclick="shareApp()">
             <img src="img/share-icon.svg" alt="Compartir" class="share-icon-img">
         </button>
         
         <div id="dropdown" class="dropdown-content">
+	    <a href="#" onclick="toggleMenu()" style="font-weight: bold;">Inicio</a>
             <a href="#section-promo" onclick="toggleMenu()">Promociones</a>
             <a href="#section-perro" onclick="toggleMenu()">Perros</a>
             <a href="#section-hamburguesa" onclick="toggleMenu()">Hamburguesas</a>
@@ -326,6 +329,15 @@
             <a href="#section-clubhouse" onclick="toggleMenu()">Clubhouse</a>
             <a href="#section-bebidas-p" onclick="toggleMenu()">Bebidas Personales</a>
             <a href="#section-bebidas-g" onclick="toggleMenu()">Bebidas 1.5L</a>
+	    <!-- Separator Line -->
+	    <hr style="border: 0; border-top: 1px solid #333; ">
+	    <!-- Developer Section -->
+	    <div class="dev-section" style="padding: 0 10px 10px 10px; ">
+	        <p style="font-size: 0.9rem; color: #888; margin-bottom: 8px;">¿Necesitas un sistema así?</p>
+	        <button onclick="contactarJacsTech()" style="background: none; border: None; cursor: pointer; font-weight: 600; font-size: 1rem; 			transition: 0.3s; " >
+ 	            Contactar a JACS-Tech
+ 	        </button>
+ 	    </div>
         </div>
     </header>        
 
@@ -1646,12 +1658,22 @@
 	    }
 	}
 
+	function contactarJacsTech() {
+	    const numero = "573161512216"; // Reemplaza con tu número de Cali
+	    const mensaje = encodeURIComponent("Hola JACS-Tech, vi el sistema de Pague Menos y me gustaría solicitar una cotización para un proyecto similar.");
+	    const url = `https://wa.me/${numero}?text=${mensaje}`;
+    
+	    window.open(url, '_blank');
+	}
+
 	// Execute all Logics to upload page
 	window.addEventListener('DOMContentLoaded', () => {
 	    actualizarEstadoTienda();
 	    gestionarPromociones();
 	    configurarUbicacion();
 	});
+
+	
     </script>
 
     <!-- Modal de Envío -->
