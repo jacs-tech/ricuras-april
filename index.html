@@ -149,10 +149,19 @@
         .product-price { font-weight: 600; color: var(--dark); }
 
         .controls { display: flex; align-items: center; gap: 10px; margin-left: 15px; }
-        .btn-qty { 
-            width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--primary);
-            background: var(--white); color: var(--primary); font-weight: bold; cursor: pointer; font-size: 1.4rem;
-        }
+
+        .btn-qty:active {
+			transform: scale(0.9); /* Makes the button slightly smaller when tapped */
+			background-color: #4a0d14; /* Optional: darkens the red slightly on tap */
+		}
+		.btn-qty { 
+			width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--primary);
+			background: var(--white); color: var(--primary); font-weight: bold; cursor: pointer; font-size: 1.4rem;
+			/* This removes the blue/grey square highlight on mobile tap */
+			-webkit-tap-highlight-color: transparent;
+			/* This prevents the "flash" on some Android browsers */
+			outline: none;
+		}
         .btn-qty:disabled { border-color: #ccc; color: #ccc; }
         .qty-display { min-width: 20px; text-align: center; font-weight: 600; }
 
@@ -308,7 +317,7 @@
     <header>
         <button class="burger-menu" onclick="toggleMenu()">☰</button>
         <div class="store-name">
-  	    	<a href="#" style="text-decoration: none; color: inherit;">STORENAME</a>
+  	    	<a href="#" style="text-decoration: none; color: inherit;">RICURAS APRIL</a>
 		</div>
 		<button class="share-btn" onclick="shareApp()">
 			<img src="img/share-icon.svg" alt="Compartir" class="share-icon-img">
@@ -687,7 +696,7 @@
 			}
 		
 			let total = 0;
-			let orderText = "¡Hola STORENAME! Quisiera hacer el siguiente pedido:%0A%0A";
+			let orderText = "¡Hola Ricuras April! Quisiera hacer el siguiente pedido:%0A%0A";
 		
 			// Bucle para extraer productos del carrito
 			Object.values(products).forEach(p => {
@@ -923,8 +932,8 @@
 
         async function shareApp() {
 			const shareData = {
-				title: 'Menú Interactivo | StoreName',
-				text: 'StoreName.\nServicio a domicilio.\nHaz tu pedido por WhatsApp:',
+				title: 'Menú Interactivo | Ricuras April',
+				text: 'Ricuras April.\nServicio a domicilio.\nHaz tu pedido por WhatsApp:',
 				url: 'https://jacs-tech.github.io/GITHUB-REPOSITORY/'
 				};
 			try {
@@ -941,7 +950,7 @@
 		
 		function contactarJacsTech() {
 			const numero = "573161512216"; // Reemplaza con tu número de Cali
-			const mensaje = encodeURIComponent("Hola JACS-Tech, vi el sistema de menú en StoreName y me interesa uno para mi negocio.");
+			const mensaje = encodeURIComponent("Hola JACS-Tech, vi el sistema de menú en Ricuras April y me interesa uno para mi negocio.");
 			const url = `https://wa.me/${numero}?text=${mensaje}`;
 		
 			window.open(url, '_blank');
