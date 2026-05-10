@@ -1,0 +1,471 @@
+[
+  {
+    "section": "promocion",
+    "title": "PROMOCIONES",
+    "items": [
+      {
+        "nickname": "pr1",
+        "name": "2 HAMBURGUESAS",
+        "desc": "Pan, Carne casera, tomate, lechuga, tocineta, queso, ripio, salsas.",
+        "price": 17000,
+        "wa_item": "2 Hamburguesas"
+      }
+    ]
+  },
+  {
+    "section": "perro",
+    "title": "PERRO",
+    "items": [
+      {
+        "nickname": "pe1",
+        "name": "SENCILLO",
+        "desc": "Pan, salchicha, cebolla, ensalada, ripio, queso, salsa.",
+        "price": 9000,
+        "wa_item": "Perro Sencillo"
+      },
+      {
+        "nickname": "pe2",
+        "name": "ESPECIAL",
+        "desc": "Pan, salchicha, cebolla, ensalada, ripio, tocineta, queso, jamón.",
+        "price": 12000,
+        "wa_item": "Perro Especial"
+      },
+      {
+        "nickname": "pe3",
+        "name": "FULL EQUIPO",
+        "desc": "Pan, salchicha, cebolla, ensalada, ripio, tocineta, queso, jamón, aguacate, maicitos.",
+        "price": 16000,
+        "wa_item": "Perro Full Equipo"
+      }
+    ]
+  },
+  {
+    "section": "hamburguesa",
+    "title": "HAMBURGUESA",
+    "items": [
+      {
+        "nickname": "hm1",
+        "name": "SENCILLA",
+        "desc": "Pan, tomate, lechuga, cebolla, carne casera, tocineta, queso, jamón, ripio, huevo, salsas.",
+        "price": 13000,
+        "wa_item": "Hamburguesa Sencilla"
+      },
+      {
+        "nickname": "hm2",
+        "name": "POLLO",
+        "desc": "Pan, tomate, lechuga, cebolla, filete de pollo, tocineta, queso, jamón, ripio, huevo, salsa.",
+        "price": 13000,
+        "wa_item": "Hamburguesa de Pollo"
+      },
+      {
+        "nickname": "hm3",
+        "name": "MIXTA",
+        "desc": "Pan, tomate, lechuga, cebolla, carne pollo, tocineta, queso, ripio, huevo, salsas.",
+        "price": 20000,
+        "wa_item": "Hamburguesa Mixta"
+      },
+      {
+        "nickname": "hm4",
+        "name": "ESPECIAL",
+        "desc": "Pan, tomate, lechuga, cebolla, carne casera, chorizo, aguacate, tocineta, queso, jamón, huevo, maicitos, ripio, salsas.",
+        "price": 22000,
+        "wa_item": "Hamburguesa Especial"
+      },
+      {
+        "nickname": "hm5",
+        "name": "CHULETA",
+        "desc": "Pan, tomate, lechuga, cebolla, chuleta ahumada, tocineta, queso, jamón, ripio, huevol, salsas.",
+        "price": 19000,
+        "wa_item": "Hamburguesa de Chuleta"
+      },
+      {
+        "nickname": "hm6",
+        "name": "FULL EQUIPO",
+        "desc": "Pan, tomate, lechuga, cebolla, carne pollo, chuleta ahumada, chorizo, jamón, tocineta, queso, aguacate, huevo, ripio, maicitos, salsas.",
+        "price": 28000,
+        "wa_item": "Hamburguesa Full Equipo"
+      }
+    ]
+  },
+  {
+    "section": "salchipapa",
+    "title": "SALCHIPAPAS",
+    "items": [
+      {
+        "nickname": "sp1",
+        "name": "SENCILLA PEQUEÑA",
+        "desc": "Papa francesa, salchicha, ripio, salsas.",
+        "price": 8000,
+        "wa_item": "Salchipapa Sencilla Pequeña"
+      },
+      {
+        "nickname": "sp2",
+        "name": "SENCILLA GRANDE",
+        "desc": "Papa francesa, salchicha, ripio, salsas.",
+        "price": 14000,
+        "wa_item": "Salchipapa Sencilla Grande"
+      },
+      {
+        "nickname": "sp3",
+        "name": "GRATINADA PEQUEÑA",
+        "desc": "Salchicha, papa francesa, queso, ripio, salsas.",
+        "price": 9000,
+        "wa_item": "Salchipapa Gratinada Pequeña"
+      },
+      {
+        "nickname": "sp4",
+        "name": "GRATINADA GRANDE",
+        "desc": "Salchicha, papa francesa, queso, ripio, salsas.",
+        "price": 15000,
+        "wa_item": "Salchipapa Gratinada Grande"
+      },
+      {
+        "nickname": "sp5",
+        "name": "ESPECIAL PEQUEÑA",
+        "desc": "Papa francesa, salchicha, chorizo, queso, tocineta, ripio, salsas.",
+        "price": 10000,
+        "wa_item": "Salchipapa Especial Pequeña"
+      },
+      {
+        "nickname": "sp6",
+        "name": "ESPECIAL GRANDE",
+        "desc": "Papa francesa, salchicha, chorizo, queso, tocineta, ripio, salsas.",
+        "price": 17000,
+        "wa_item": "Salchipapa Especial Grande"
+      },
+      {
+        "nickname": "sp7",
+        "name": "SALCHICARNE PEQUEÑA",
+        "desc": "Papa francesa, salchicha, carne desmechada, queso, tocineta, maicitos, ripio, salsas.",
+        "price": 18000,
+        "wa_item": "Salchicarne Pequeña"
+      },
+      {
+        "nickname": "sp8",
+        "name": "SALCHICARNE GRANDE",
+        "desc": "Papa francesa, salchicha, carne desmechada, queso, tocineta, maicitos, ripio, salsas.",
+        "price": 30000,
+        "wa_item": "Salchicarne Grande"
+      },
+      {
+        "nickname": "sp9",
+        "name": "SALCHIPOLLO PEQUEÑA",
+        "desc": "Papa francesa, salchicha, pollo desmechado, queso, tocineta, maicitos, ripio, salsas.",
+        "price": 18000,
+        "wa_item": "Salchipollo Pequeña"
+      },
+      {
+        "nickname": "sp10",
+        "name": "SALCHIPOLLO GRANDE",
+        "desc": "Papa francesa, salchicha, pollo desmechado, queso, tocineta, maicitos, ripio, salsas.",
+        "price": 30000,
+        "wa_item": "Salchipollo Grande"
+      }
+    ]
+  },
+  {
+    "section": "pepito",
+    "title": "PEPITOS",
+    "items": [
+      {
+        "nickname": "pt1",
+        "name": "PEPITO",
+        "desc": "Pan 40 CM, carne de res, carne de cerdo, tomate, lechuga, cebolla, aguacate, maicitos, tocineta, queso.",
+        "price": 28000,
+        "wa_item": "Pepito"
+      },
+      {
+        "nickname": "pt2",
+        "name": "MINI PEPITO",
+        "desc": "Pan de 20 CM, carne de cerdo, carne de res, tomate, lechuga, cebolla, aguacate, maicitos, tocineta queso.",
+        "price": 15000,
+        "wa_item": "Mini Pepito"
+      }
+    ]
+  },
+  {
+    "section": "cachapa",
+    "title": "CACHAPAS",
+    "items": [
+      {
+        "nickname": "ca1",
+        "name": "CON QUESO",
+        "desc": "Cachapa de maiz tierno y queso de mano.",
+        "price": 15000,
+        "wa_item": "Cachapa con Queso"
+      },
+      {
+        "nickname": "ca2",
+        "name": "CON COCHINO",
+        "desc": "Cachapa de maiz tierno, queso de mano, 200 gramos de cochino frito, aguacate.",
+        "price": 21000,
+        "wa_item": "Cachapa con Cochino"
+      }
+    ]
+  },
+  {
+    "section": "patacon",
+    "title": "PATACONES",
+    "items": [
+      {
+        "nickname": "pa1",
+        "name": "SENCILLO CON CARNE",
+        "desc": "Doble plátano, ensalada, carne desmechada, jamón tocineta, queso, salsa.",
+        "price": 20000,
+        "wa_item": "Patacón Sencillo con Carne"
+      },
+      {
+        "nickname": "pa2",
+        "name": "SENCILLO CON POLLO",
+        "desc": "Doble plátano, ensalada, pollo desmechado, jamón tocineta, queso, salsa.",
+        "price": 20000,
+        "wa_item": "Patacón Sencillo con Pollo"
+      },
+      {
+        "nickname": "pa3",
+        "name": "MIXTO",
+        "desc": "Doble plátano, ensalada, carne desmechada y pollo desmechado, jamón, tocineta, queso. salsas",
+        "price": 28000,
+        "wa_item": "Patacón Mixto"
+      }
+    ]
+  },
+  {
+    "section": "shawarma",
+    "title": "SHAWARMA",
+    "items": [
+      {
+        "nickname": "sh1",
+        "name": "SENCILLO CARNE ",
+        "desc": "Ensalada, tomate, lechuga, cebolla, carne, ripio, tocineta, jamón, maicitos, queso, salsas, pan árabe artesanal.",
+        "price": 20000,
+        "wa_item": "Shawarma Sencillo con Carne"
+      },
+      {
+        "nickname": "sh2",
+        "name": "SENCILLO POLLO",
+        "desc": "Ensalada, tomate, lechuga, cebolla, pollo, ripio, tocineta, jamón, maicitos, queso, salsas, pan árabe artesanal.",
+        "price": 20000,
+        "wa_item": "Shawarma Sencillo con Pollo"
+      },
+      {
+        "nickname": "sh3",
+        "name": "MIXTO",
+        "desc": "Ensalada, tomate lechuga cebolla (carne y pollo) ripio, tocineta, jamón, maicitos, queso, salsas, pan árabe artesanal",
+        "price": 28000,
+        "wa_item": "Shawarma Mixto"
+      }
+    ]
+  },
+  {
+    "section": "empanada",
+    "title": "EMPANADAS",
+    "items": [
+      {
+        "nickname": "em1",
+        "name": "JAMÓN Y QUESO",
+        "price": 5000,
+        "wa_item": "Empanada Jamón Queso"
+      },
+      {
+        "nickname": "em2",
+        "name": "POLLO",
+        "price": 5000,
+        "wa_item": "Empanada Pollo"
+      },
+      {
+        "nickname": "em3",
+        "name": "POLLO CON QUESO",
+        "price": 6000,
+        "wa_item": "Empanada Pollo Queso"
+      },
+      {
+        "nickname": "em4",
+        "name": "CARNE MOLIDA",
+        "price": 5000,
+        "wa_item": "Empanada Carne Molida"
+      },
+      {
+        "nickname": "em5",
+        "name": "CARNE MOLIDA CON QUESO",
+        "price": 6000,
+        "wa_item": "Empanada Carne Molida Queso"
+      },
+      {
+        "nickname": "em6",
+        "name": "CARNE MECHADA",
+        "price": 5000,
+        "wa_item": "Empanada Carne Mechada"
+      },
+      {
+        "nickname": "em7",
+        "name": "CARNE MECHADA CON QUESO",
+        "price": 6000,
+        "wa_item": "Empanada Mechada con Queso"
+      },
+      {
+        "nickname": "em8",
+        "name": "CORDON BLEU",
+        "price": 6500,
+        "wa_item": "Empanada Cordon Blue"
+      },
+      {
+        "nickname": "em9",
+        "name": "PABELLÓN",
+        "price": 7000,
+        "wa_item": "Empanada Pabellon"
+      }
+    ]
+  },
+  {
+    "section": "clubhouse",
+    "title": "CLUBHOUSE",
+    "items": [
+      {
+        "nickname": "cl1",
+        "name": "CLUBHOUSE",
+        "desc": "Pan de sándwich, 1 capa de tomate lechuga cebolla, 2 capa jamón y queso, 1 capa de tocineta y huevo, 1 capa de carne o pollo, Porción de papas francesa, todas las salsas.",
+        "price": 23000,
+        "wa_item": "Clubhouse"
+      }
+    ]
+  },
+  {
+    "section": "bebidapersonal",
+    "title": "BEBIDAS PERSONALES",
+    "items": [
+      {
+        "nickname": "bp1",
+        "name": "QUATRO",
+        "price": 3500,
+        "wa_item": "Quatro Personal"
+      },
+      {
+        "nickname": "bp2",
+        "name": "PREMIO",
+        "price": 3500,
+        "wa_item": "Premio Personal"
+      },
+      {
+        "nickname": "bp3",
+        "name": "JUGO DEL VALLE",
+        "price": 2500,
+        "wa_item": "Jugo Valle Personal"
+      },
+      {
+        "nickname": "bp4",
+        "name": "SPRITE",
+        "price": 3500,
+        "wa_item": "Sprite Personal"
+      },
+      {
+        "nickname": "bp5",
+        "name": "COCA COLA",
+        "price": 4000,
+        "wa_item": "Coca Cola Personal"
+      },
+      {
+        "nickname": "bp6",
+        "name": "MALTIN POLAR",
+        "price": 6500,
+        "wa_item": "Maltin Polar"
+      },
+      {
+        "nickname": "bp7",
+        "name": "FRESCOLITA",
+        "price": 8000,
+        "wa_item": "Frescolita"
+      },
+      {
+        "nickname": "bp8",
+        "name": "POLARCITA",
+        "price": 7000,
+        "wa_item": "Polarcita"
+      },
+      {
+        "nickname": "bp9",
+        "name": "POLAR LIGHT",
+        "price": 6500,
+        "wa_item": "Polar Light"
+      },
+      {
+        "nickname": "bp10",
+        "name": "ZULIA",
+        "price": 6500,
+        "wa_item": "Zulia"
+      },
+      {
+        "nickname": "bp11",
+        "name": "SOLERA AZUL",
+        "price": 7500,
+        "wa_item": "Solera Azul"
+      },
+      {
+        "nickname": "bp12",
+        "name": "SOLERA VERDE",
+        "price": 7500,
+        "wa_item": "Solera Verde"
+      }
+    ]
+  },
+  {
+    "section": "bebidafamiliar",
+    "title": "BEBIDAS FAMILIARES (1.5 LT)",
+    "items": [
+      {
+        "nickname": "bf1",
+        "name": "COCA COLA 1.5 LT",
+        "price": 7500,
+        "wa_item": "Coca Cola 1.5 lt"
+      },
+      {
+        "nickname": "bf2",
+        "name": "PREMIO 1.5 LT",
+        "price": 6500,
+        "wa_item": "Premio 1.5 lt"
+      },
+      {
+        "nickname": "bf3",
+        "name": "QUATRO 1.5 LT",
+        "price": 6500,
+        "wa_item": "Quatro 1.5 lt"
+      },
+      {
+        "nickname": "bf4",
+        "name": "SPRITE 1.5 LT",
+        "price": 6500,
+        "wa_item": "Sprite 1.5 lt"
+      },
+      {
+        "nickname": "bf5",
+        "name": "JUGO DEL VALLE 1.5 LT",
+        "price": 5500,
+        "wa_item": "Jugo Valle 1.5 lt"
+      },
+      {
+        "nickname": "bf6",
+        "name": "GOLDEN MANZANA",
+        "price": 20000,
+        "wa_item": "Golden Manzana 1.5 lt"
+      },
+      {
+        "nickname": "bf7",
+        "name": "GOLDEN NARANJA",
+        "price": 20000,
+        "wa_item": "Golden Naranja 1.5 lt"
+      },
+      {
+        "nickname": "bf8",
+        "name": "RICO MALT",
+        "price": 20000,
+        "wa_item": "Riko Malt 1.5 lt"
+      },
+      {
+        "nickname": "bf9",
+        "name": "CHICA DON SIMÓN",
+        "price": 20000,
+        "wa_item": "Chicha Don Simón 1.5 lt"
+      }
+    ]
+  }
+]
