@@ -552,6 +552,25 @@
 				spinner.style.display = 'none';
 				menuContainer.innerHTML = fullHTML;
 				navContainer.innerHTML = navHTML; // Push the burger menu links!
+
+				// --- INSERT PROMO LOGIC HERE ---
+				try {
+					const configResponse = await fetch('config.json');
+					const configData = await configResponse.json();
+					const today = new Date().getDay(); 
+					const todayConfig = configData.horario[today];
+
+					if (todayConfig && todayConfig.isPromo) {
+						const promoSection = document.getElementById('section-promo');
+						if (promoSection) {
+							promoSection.style.display = 'block';
+							console.log("¡Hoy es día de promo!");
+						}
+					}
+				} catch (configError) {
+					console.error("Error loading promo config:", configError);
+				}
+				// --- END PROMO LOGIC ---
 		
 			} catch (error) {
 				console.error("Error:", error);

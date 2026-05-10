@@ -29,14 +29,14 @@ const config = {
 // Loop through the schedule rows (Index 5 to 11)
 for (let i = 5; i <= 11; i++) {
     if (configRaw[i]) { 
-        // Validamos si el valor de la celda es undefined o el texto "null" que viene del Excel
         let openVal = configRaw[i][2];
         let closeVal = configRaw[i][3];
+        let promoVal = configRaw[i][4]; // <--- NEW: Column E (Index 4)
 
         config.horario.push({
-            // Si el valor no existe o es el string "null", guardamos null real
             open: (openVal === undefined || openVal === "null") ? null : openVal,
-            close: (closeVal === undefined || closeVal === "null") ? null : closeVal
+            close: (closeVal === undefined || closeVal === "null") ? null : closeVal,
+            isPromo: promoVal === "yes" // <--- NEW: Stores true if "yes", false otherwise
         });
     }
 }

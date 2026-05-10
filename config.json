@@ -4,31 +4,38 @@
   "horario": [
     {
       "open": 17,
-      "close": 24
+      "close": 24,
+      "isPromo": true
     },
     {
       "open": 17,
-      "close": 24
+      "close": 24,
+      "isPromo": true
     },
     {
       "open": 17,
-      "close": 24
+      "close": 24,
+      "isPromo": false
     },
     {
       "open": 17,
-      "close": 24
+      "close": 24,
+      "isPromo": false
     },
     {
       "open": 17,
-      "close": 24
+      "close": 24,
+      "isPromo": false
     },
     {
       "open": 17,
-      "close": 24
+      "close": 24,
+      "isPromo": false
     },
     {
       "open": 17,
-      "close": 24
+      "close": 24,
+      "isPromo": false
     }
   ]
 }
