@@ -456,6 +456,7 @@
 		let numeroWhatsAppStore = ""; // It is called on when JSON uploads 
 		let horarioStore = {}
 		let urlUbicacion = ""; // Global variable to store geo in case it is activated 
+		window.appConfig = null; // Stores the entire Config sheet data (overcharge, promo days, etc.)
 		
 
 		// 2. === START ===  
@@ -503,20 +504,30 @@
 			// (RENDERS BURGER MENU AND PRODUCTS)
 			const spinner = document.getElementById('loading-spinner');
 			const menuContainer = document.getElementById('menu-wrapper');
-			const navContainer = document.getElementById('dynamic-nav-links'); // Get the new nav container
-		
-			try {
-				const response = await fetch('menu.json');
-				const menuData = await response.json();
-			
-				let fullHTML = ''; 
-				let navHTML = ''; // String to hold our navigation links
+			const navContainer = document.getElementById('dynamic-nav-links'); 
 
+			try {
+				// 1. Fetch both data files
+				const [menuResponse, configResponse] = await Promise.all([
+					fetch('menu.json'),
+					fetch('config.json')
+				]);
+
+				const menuData = await menuResponse.json();
+				const configData = await configResponse.json();
+
+				// 2. Save config globally so renderCart() can use it for the overcharge calculation
+				window.appConfig = configData;
+
+				let fullHTML = ''; 
+				let navHTML = ''; 
+
+				// 3. Build the HTML structure
 				menuData.forEach(section => {
-					// 1. Build the Navigation Links (Burger Menu)
+					// Build the Navigation Links (Burger Menu)
 					navHTML += `<a href="#section-${section.section}" onclick="toggleMenu()">${section.title}</a>`;
 
-					// 2. Build the Product Sections (Existing Logic)
+					// Build the Product Sections
 					fullHTML += `
 						<div id="section-${section.section}">
 							<img src="img/${section.section}-banner.jpg" class="section-banner">
@@ -525,7 +536,7 @@
 
 					section.items.forEach(item => {
 						const descriptionHTML = item.desc ? `<p class="product-desc">${item.desc}</p>` : '';
-		
+
 						fullHTML += `
 							<div class="product-card">
 								<div class="product-info">
@@ -540,7 +551,7 @@
 								</div>
 							</div>
 						`;
-		
+
 						products[item.nickname] = { 
 							name: item.wa_item, 
 							price: item.price, 
@@ -550,32 +561,28 @@
 					fullHTML += `</div>`;
 				});
 
-				// 3. Inject both the Menu and the Navigation
+				// 4. Inject both the Menu and the Navigation into the DOM
 				spinner.style.display = 'none';
 				menuContainer.innerHTML = fullHTML;
-				navContainer.innerHTML = navHTML; // Push the burger menu links!
+				navContainer.innerHTML = navHTML; 
 
-				// --- INSERT PROMO LOGIC HERE ---
-				try {
-					const configResponse = await fetch('config.json');
-					const configData = await configResponse.json();
-					const today = new Date().getDay(); 
-					const todayConfig = configData.horario[today];
+				// 5. PROMO LOGIC: Check if today is a promo day
+				const today = new Date().getDay(); // 0=Sun, 1=Mon, etc.
+				const todayConfig = window.appConfig.horario[today];
 
-					if (todayConfig && todayConfig.isPromo) {
-						const promoSection = document.getElementById('section-promo');
-						if (promoSection) {
-							promoSection.style.display = 'block';
-							console.log("¡Hoy es día de promo!");
-						}
+				if (todayConfig && todayConfig.isPromo) {
+					const promoSection = document.getElementById('section-promo');
+					if (promoSection) {
+						promoSection.style.display = 'block';
+						console.log("¡Hoy es día de promo! Unhiding section-promo.");
 					}
-				} catch (configError) {
-					console.error("Error loading promo config:", configError);
 				}
-				// --- END PROMO LOGIC ---
-		
+
+				// 6. Final step: Render the cart (it will be empty initially, but ensures total is 0)
+				renderCart();
+
 			} catch (error) {
-				console.error("Error:", error);
+				console.error("Error loading menu or config:", error);
 				spinner.innerHTML = "<p>Error al cargar el menú. Revisa tu conexión.</p>";
 			}
 		}
@@ -683,17 +690,28 @@
 		}		
 		
 		function renderCart() {
-			// (RENDERS CART)
-			// It draws the or update the list of products the user has picked
 			const itemsContainer = document.getElementById('cart-items');
 			const totalContainer = document.getElementById('total-price');
 			let html = "";
 			let total = 0;
+			
+			let foodUnitsCount = 0; // Contador para empaques
 
-			Object.values(products).forEach(p => {
+			// Necesitamos acceder a la config global (puedes guardarla en una variable global al cargar el sitio)
+			// Supongamos que guardamos la data de config.json en window.appConfig
+			const overchargeConfig = window.appConfig ? window.appConfig.overcharge : null;
+
+			Object.keys(products).forEach(id => {
+				const p = products[id];
 				if (p.qty > 0) {
 					const subtotal = p.price * p.qty;
 					total += subtotal;
+
+					// Lógica de empaque: si NO es bebida (bp o bf), sumar unidades
+					if (!id.startsWith('bp') && !id.startsWith('bf')) {
+						foodUnitsCount += p.qty;
+					}
+
 					html += `
 					<div class="cart-item-row">
 						<strong>${p.name} x ${p.qty}</strong>
@@ -701,6 +719,18 @@
 					</div>`;
 				}
 			});
+
+			// --- AGREGAR RECARGO SI EXISTE Y HAY COMIDA ---
+			if (overchargeConfig && overchargeConfig.value && foodUnitsCount > 0) {
+				const totalOvercharge = overchargeConfig.value * foodUnitsCount;
+				total += totalOvercharge;
+
+				html += `
+				<div class="cart-item-row overcharge-row" style="border-top: 1px dashed #ccc; margin-top: 10px; padding-top: 5px;">
+					<strong>${overchargeConfig.label} x ${foodUnitsCount}</strong>
+					<span class="cart-item-sub">subtotal: $ ${totalOvercharge.toLocaleString('es-CO')}</span>
+				</div>`;
+			}
 
 			itemsContainer.innerHTML = html || "El carrito está vacío";
 			totalContainer.innerText = `$ ${total.toLocaleString('es-CO')}`;

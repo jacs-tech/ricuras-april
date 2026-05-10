@@ -23,7 +23,12 @@ const configRaw = XLSX.utils.sheet_to_json(configSheet, { header: 1 });
 const config = {
     whatsapp: configRaw[1][1], // Cell B2
     map_url: configRaw[2][1],  // Cell B3
-    horario: [] // <--- CAMBIADO: Ahora es un Array para que tenga orden fijo
+    horario: [], // <--- CAMBIADO: Ahora es un Array para que tenga orden fijo
+    // NUEVO: Capturar recargo (Fila 16 -> Índice 15)
+    overcharge: {
+        label: configRaw[15] ? configRaw[15][0] : null, // "Caja icopor"
+        value: (configRaw[15] && configRaw[15][1]) ? parseInt(configRaw[15][1]) : null // 500
+    }
 };
 
 // Loop through the schedule rows (Index 5 to 11)
