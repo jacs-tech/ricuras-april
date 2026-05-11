@@ -21,9 +21,11 @@ const configSheet = workbook.Sheets[CONFIG_SHEET];
 const configRaw = XLSX.utils.sheet_to_json(configSheet, { header: 1 });
 
 const config = {
-    whatsapp: configRaw[1][1], // Cell B2
-    map_url: configRaw[2][1],  // Cell B3
-    horario: [], // <--- CAMBIADO: Ahora es un Array para que tenga orden fijo   
+    whatsapp: configRaw[1][1],
+    map_url: configRaw[2][1],
+    // NEW: Capture cell B15 (Row 15, Index 14)
+    chargePackage: (configRaw[14] && configRaw[14][1] === "yes"), 
+    horario: []   
 };
 
 // Loop through the schedule rows (Index 5 to 11)
@@ -79,7 +81,9 @@ rawData.forEach(row => {
         name: row.item,
         desc: row.desc,
         price: row.price,
-        wa_item: row['wa item']
+        wa_item: row['wa item'],
+        // NEW: Capture Column H (Package price)
+        packagePrice: row.package || 0 
     });
 });
 

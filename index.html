@@ -542,11 +542,13 @@
                             </div>
                         `;       
 
-                        products[item.nickname] = {
-                            name: item.wa_item,
-                            price: item.price,
-                            qty: 0
-                        };
+                        // Inside the items loop in renderMenu()
+						products[item.nickname] = { 
+							name: item.wa_item, 
+							price: item.price, 
+							packagePrice: item.packagePrice, // Save this here!
+							qty: 0 
+						};
                     });
                     fullHTML += `</div>`;
                 });
@@ -686,17 +688,25 @@
 		}		
 		
 		function renderCart() {
-			// (RENDERS CART)
-			// It draws the or update the list of products the user has picked
 			const itemsContainer = document.getElementById('cart-items');
 			const totalContainer = document.getElementById('total-price');
 			let html = "";
 			let total = 0;
+			let totalPackageCharge = 0;
+
+			// Check if the store wants to charge for packaging
+			const shouldChargePackage = window.appConfig && window.appConfig.chargePackage;
 
 			Object.values(products).forEach(p => {
 				if (p.qty > 0) {
 					const subtotal = p.price * p.qty;
 					total += subtotal;
+
+					// Calculate package charge if enabled
+					if (shouldChargePackage && p.packagePrice > 0) {
+						totalPackageCharge += (p.packagePrice * p.qty);
+					}
+
 					html += `
 					<div class="cart-item-row">
 						<strong>${p.name} x ${p.qty}</strong>
@@ -704,6 +714,16 @@
 					</div>`;
 				}
 			});
+
+			// Add the Package line if there is a charge
+			if (totalPackageCharge > 0) {
+				total += totalPackageCharge;
+				html += `
+				<div class="cart-item-row" style="border-top: 1px dashed #ccc; margin-top: 10px; color: #666;">
+					<strong>Caja icopor subtotal</strong>
+					<span class="cart-item-sub">$ ${totalPackageCharge.toLocaleString('es-CO')}</span>
+				</div>`;
+			}
 
 			itemsContainer.innerHTML = html || "El carrito está vacío";
 			totalContainer.innerText = `$ ${total.toLocaleString('es-CO')}`;
