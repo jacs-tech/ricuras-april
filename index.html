@@ -562,6 +562,8 @@
                 try {
                     const configResponse = await fetch('config.json');
                     const configData = await configResponse.json();
+					// ESTA LÍNEA ES VITAL:
+    				window.appConfig = configData;
                     const today = new Date().getDay();
                     const todayConfig = configData.horario[today];
 
@@ -582,7 +584,6 @@
                 console.error("Error:", error);
                 spinner.innerHTML = "<p>Error al cargar el menú. Revisa tu conexión.</p>";
             }
-
         }
 	
 		function actualizarEstadoTienda() {
