@@ -250,6 +250,15 @@
             cursor: pointer; 	
         }
 
+		.delivery-notice {
+			font-size: 0.85rem;
+			color: #666;
+			text-align: center;
+			margin-top: 10px;
+			font-style: italic;
+			padding: 0 10px;
+		}
+
         .cart-item-row { margin-bottom: 12px; border-bottom: 1px solid #f0f0f0; padding-bottom: 5px; }
         .cart-item-sub { font-size: 0.85rem; color: #666; display: block; margin-top: 2px; }
 
@@ -412,8 +421,7 @@
 		<strong>Total: <span id="total-price">$ 0</span></strong>
 
 		<!-- Container to align buttons side-by-side -->
-		<div style="display: flex; gap: 10px; margin-top: 15px;">
-			
+		<div style="display: flex; gap: 10px; margin-top: 15px;">			
 			<!-- Reset Button (Now on the left) -->
 			<button id="reset-cart" onclick="resetPedido()" flex: 1;">
 				Vaciar 🗑️
@@ -424,6 +432,10 @@
 				<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA" style="width: 25px; height: 25px;">
 				Pedir
 			</button>        
+
+			<p class="delivery-notice">
+				* El total mostrado no incluye el costo de envío. El valor del domicilio se calculará según la distancia de entrega.
+			</p>
 		</div>
 	</div>
 	<!-- SENDING MODULE -->
