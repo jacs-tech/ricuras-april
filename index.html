@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menú Interactivo | Ricuras April</title>
+    <title>Cargando Menú...</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
@@ -34,7 +34,7 @@
             display: flex; align-items: center; justify-content: space-between;
             padding: 0 20px; box-sizing: border-box;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            z-index: 1000;
+            z-index: 10000;
         }
 
         .burger-menu { font-size: 24px; cursor: pointer; background: none; border: none; }
@@ -48,6 +48,7 @@
             background: var(--white); width: 220px;
             box-shadow: 2px 2px 10px rgba(0,0,0,0.5); z-index: 999;
             max-height: 80vh; overflow-y: auto;
+			z-index: 9999 !important;
         }
         .dropdown-content a {
             display: block; padding: 12px 20px;
@@ -183,6 +184,7 @@
 
         .cart-float:active {
             transform: scale(1.1);
+			-webkit-tap-highlight-color: transparent;
         }
 
         .cart-float img {
@@ -204,7 +206,7 @@
             box-shadow: 0 5px 20px rgba(0,0,0,0.8);
             padding: 20px; 
             overflow-y: auto; 
-            z-index: 1001;
+            z-index: 9990;
 
             /* Nuevas propiedades para el efecto suave */
             opacity: 0;
@@ -249,6 +251,15 @@
             padding: 12px;
             cursor: pointer; 	
         }
+
+		.delivery-notice {
+			font-size: 1rem;
+			color: #555555;
+			text-align:left ;
+			margin-top: 10px;
+			font-style: italic;
+			padding: 0 10px;
+		}
 
 		.delivery-notice {
 			font-size: 1rem;
@@ -328,7 +339,9 @@
     <header>
         <button class="burger-menu" onclick="toggleMenu()">☰</button>
         <div class="store-name">
-  	    	<a href="#" style="text-decoration: none; color: inherit;">RICURAS APRIL</a>
+  	    	<a href="#" id="header-store-name" style="text-decoration: none; color: inherit; text-transform: uppercase; ">
+				Cargando...
+			</a>
 		</div>
 		<button class="share-btn" onclick="shareApp()">
 			<img src="img/share-icon.svg" alt="Compartir" class="share-icon-img">
@@ -410,7 +423,7 @@
 
     <!-- CARRITO FLOTANTE -->
     <button class="cart-float" onclick="toggleCart()">
-	<img id="cart-icon-img" src="img/cart-empty.png" alt="Carrito">
+		<img id="cart-icon-img" src="img/cart-empty.png" alt="Carrito">
     </button>
 
     <div id="cart-modal">
@@ -483,11 +496,15 @@
 				const menuData = await menuRes.json();
 				const configData = await configRes.json();
 
-				// AQUÍ es donde se usa la función que mencionaste
+				// 1. Asignamos al objeto global para que otros botones lo usen
+       			window.appConfig = configData;
+
 				applyStoreConfig(configData);
 
-				renderMenu(menuData);
+				// --- REGISTRO DE APERTURA (PAGE VIEW) ---
+        		logAnalytics("Page View", `Menu opened for ${configData.storeName}`);
 
+				renderMenu(menuData);
 				document.getElementById('loading-spinner').style.display = 'none';
 			} catch (error) {
 				console.error("Error:", error);
@@ -544,7 +561,6 @@
                                     ${descriptionHTML}
                                     <span class="product-price">$ ${item.price.toLocaleString('es-CO')}</span>
                                 </div>
-
                                 <div class="controls">
                                     <button class="btn-qty" onclick="updateQty('${item.nickname}', -1)" id="btn-minus-${item.nickname}" disabled>-</button>    
                                     <span class="qty-display" id="qty-${item.nickname}">0</span>
@@ -575,6 +591,16 @@
                     const configData = await configResponse.json();
 					// ESTA LÍNEA ES VITAL:
     				window.appConfig = configData;
+					if (configData.storeName) {
+						// 1. Cambia el nombre en la pestaña del navegador
+						document.title = `Menú Interactivo | ${configData.storeName}`;
+
+						// 2. Cambia el nombre en el encabezado (asegúrate de que tu <h1> tenga este ID)
+						const storeNameElement = document.getElementById('header-store-name');
+						if (storeNameElement) {
+							storeNameElement.innerText = configData.storeName;
+						}
+					}
                     const today = new Date().getDay();
                     const todayConfig = configData.horario[today];
 
@@ -752,7 +778,8 @@
 			}
 		
 			let total = 0;
-			let orderText = "¡Hola Ricuras April! Quisiera hacer el siguiente pedido:%0A%0A";
+			let store = window.appConfig.storeName || "la tienda";
+			let orderText = encodeURIComponent(`¡Hola ${store}! Quisiera hacer el siguiente pedido:\n\n`);
 		
 			// Bucle para extraer productos del carrito
 			Object.values(products).forEach(p => {
@@ -779,6 +806,7 @@
 			window.open(`https://wa.me/${numeroWhatsAppStore}?text=${mensajeFinal}`);
 		
 			cerrarModal();
+			logAnalytics("WhatsApp Order", "User clicked send order button");			
 		}
 		
 		function obtenerGeo() {
@@ -987,31 +1015,65 @@
 		// ACTIONS THAT DO NOT AFFECT SHOPPING FLOW
 
         async function shareApp() {
+			// 1. Declare the variables locally by pulling them from your global config
+			const store = window.appConfig && window.appConfig.storeName ? window.appConfig.storeName : "Menú Interactivo";
+			const repo = window.appConfig && window.appConfig.repoName ? window.appConfig.repoName : "";
+			
 			const shareData = {
-				title: 'Menú Interactivo | Ricuras April',
-				text: 'Ricuras April.\nServicio a domicilio.\nHaz tu pedido por WhatsApp:',
-				url: 'https://jacs-tech.github.io/GITHUB-REPOSITORY/'
-				};
+				// Título dinámico para la pestaña de compartir
+				title: `Menú Interactivo | ${store}`,
+				// Texto dinámico con el nombre de la tienda
+				text: `${store}.\nServicio a domicilio.\nHaz tu pedido por WhatsApp:`,
+				// URL dinámica usando el nombre del repositorio de la celda B19
+				url: `https://jacs-tech.github.io/${repo}/`
+			};
+
 			try {
-			if (navigator.share) {
-				await navigator.share(shareData);
-			} else {
-				await navigator.clipboard.writeText(window.location.href);
-				alert("Enlace copiado al portapapeles");
-			}
+				logAnalytics("Share App", "User opened share menu");
+				if (navigator.share) {
+					await navigator.share(shareData);
+				} else {
+					// If the repo variable is empty, fall back to the current browser URL
+					const fallbackUrl = repo ? `https://jacs-tech.github.io/${repo}/` : window.location.href;
+					await navigator.clipboard.writeText(fallbackUrl);
+					alert("Enlace copiado al portapapeles");
+				}
 			} catch (err) { 
 			console.log("Error al compartir: ", err); 
 			}
 		}
 		
 		function contactarJacsTech() {
-			const numero = "573161512216"; // Reemplaza con tu número de Cali
-			const mensaje = encodeURIComponent("Hola JACS-Tech, vi el sistema de menú en Ricuras April y me interesa uno para mi negocio.");
+			const numero = "573161512216"; 
+			const store = window.appConfig.storeName || "un comercio";			
+			const mensaje = encodeURIComponent(`Hola JACS-Tech, vi el sistema de menú en ${store} y me interesa uno para mi negocio.`);
+			
 			const url = `https://wa.me/${numero}?text=${mensaje}`;
-		
 			window.open(url, '_blank');
 		}
 
+		async function logAnalytics(action, details = "") {
+			const scriptURL = "https://script.google.com/macros/s/AKfycbxfZIy3suWjAHEp0Mcv6PoINEhpDpgzaz4W-xh14k2KZD4CBYr77Ydsfx1-ox-t2iKg/exec";
+			
+			const payload = {
+				store: window.appConfig.storeName || "Unknown Store",
+				action: action,
+				details: details
+			};
+
+			try {
+				// We use 'keepalive' to ensure the request finishes even if the page redirects (like to WhatsApp)
+				await fetch(scriptURL, {
+					method: 'POST',
+					mode: 'no-cors', 
+					body: JSON.stringify(payload),
+					keepalive: true
+				});
+			} catch (err) {
+				console.error("Analytics Error:", err);
+			}
+		}
+		
 		// 7. === THE FINAL TRIGGER === 
 		initApp();
     </script>   

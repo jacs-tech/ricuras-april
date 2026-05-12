@@ -25,6 +25,9 @@ const config = {
     map_url: configRaw[2][1],
     // NEW: Capture cell B15 (Row 15, Index 14)
     chargePackage: (configRaw[14] && configRaw[14][1] === "yes"), 
+    // New Automation Fields
+    storeName: configRaw[17] ? configRaw[17][1] : 'Mi Tienda',    // Cell B18
+    repoName: configRaw[18] ? configRaw[18][1] : '',
     horario: []   
 };
 
