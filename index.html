@@ -1055,9 +1055,17 @@
 		async function logAnalytics(action, details = "") {
 			const scriptURL = "https://script.google.com/macros/s/AKfycbxfZIy3suWjAHEp0Mcv6PoINEhpDpgzaz4W-xh14k2KZD4CBYr77Ydsfx1-ox-t2iKg/exec";
 			
+			// --- LÓGICA DE IDENTIFICACIÓN CENTRALIZADA ---
+			const isDev = localStorage.getItem('jacs_dev') === 'true';
+			const userLabel = isDev ? "[ADMIN]" : "[USER]";
+			
+			// Combinamos la etiqueta con los detalles para que en el Sheet 
+			// veas algo como: "[ADMIN] Page View" o "[USER] Shared App"
+			const finalAction = `${userLabel} ${action}`;
+
 			const payload = {
 				store: window.appConfig.storeName || "Unknown Store",
-				action: action,
+				action: finalAction,
 				details: details
 			};
 
