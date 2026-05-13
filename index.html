@@ -172,6 +172,13 @@
 			padding-bottom: 1px;
         }
 
+		#section-promo .section-title {
+			background-color: #EE5825;			
+			color: var(--white);            /* Example: change text color */
+			font-size: 1.2rem;         /* Example: make it stand out */
+			text-transform: uppercase; /* Example: make it all caps */
+		}
+
         .cart-float {
             position: fixed; bottom: 15px; right: 20px;
             background: var(--primary); color: white;
@@ -548,7 +555,9 @@
                     fullHTML += `
                         <div id="section-${section.section}">
                             <img src="img/${section.section}-banner.jpg" class="section-banner">
-                            <h2 class="section-title">${section.title}</h2>
+                            <h2 class="section-title">
+								<h2 class="section-title">${section.title}</h2>
+							</h2>
                     `;
 
                     section.items.forEach(item => {
@@ -588,27 +597,42 @@
                 // --- INSERT PROMO LOGIC HERE ---
                 try {
                     const configResponse = await fetch('config.json');
-                    const configData = await configResponse.json();
-					// ESTA LÍNEA ES VITAL:
-    				window.appConfig = configData;
-					if (configData.storeName) {
-						// 1. Cambia el nombre en la pestaña del navegador
-						document.title = `Menú Interactivo | ${configData.storeName}`;
+                    const configData = await configResponse.json();                 
+                    window.appConfig = configData;  
 
-						// 2. Cambia el nombre en el encabezado (asegúrate de que tu <h1> tenga este ID)
-						const storeNameElement = document.getElementById('header-store-name');
-						if (storeNameElement) {
-							storeNameElement.innerText = configData.storeName;
-						}
-					}
+                    if (configData.storeName) {
+                        document.title = `Menú Interactivo | ${configData.storeName}`;
+                        const storeNameElement = document.getElementById('header-store-name');
+                        if (storeNameElement) {
+                            storeNameElement.innerText = configData.storeName;
+                        }
+                    }
+
+                    // 1. Get current status and timing
                     const today = new Date().getDay();
                     const todayConfig = configData.horario[today];
+                    
+                    // Logic to check if store is currently OPEN based on your horario
+                    // Assuming you have a function called isStoreCurrentlyOpen
+                    const isCurrentlyOpen = isStoreCurrentlyOpen(configData); 
 
-                    if (todayConfig && todayConfig.isPromo) {
-                        const promoSection = document.getElementById('section-promo');
-                        if (promoSection) {
+                    const promoSection = document.getElementById('section-promo');
+                    if (promoSection) {
+                        // 2. NEW LOGIC: Trigger if it IS a promo day
+                        if (todayConfig && todayConfig.isPromo) {
                             promoSection.style.display = 'block';
+                            localStorage.setItem('promo_active_session', 'true'); // Set the flag
                             console.log("¡Hoy es día de promo!");
+                        } 
+                        // 3. PERSISTENCE: If it's not a promo day anymore, but the store hasn't closed yet
+                        else if (isCurrentlyOpen && localStorage.getItem('promo_active_session') === 'true') {
+                            promoSection.style.display = 'block';
+                            console.log("Promo persistente: Aún no cierran.");
+                        } 
+                        // 4. CLEANUP: If store is closed or it's a new day after closure
+                        else {
+                            promoSection.style.display = 'none';
+                            localStorage.removeItem('promo_active_session'); // Clear the flag
                         }
                     }
 
