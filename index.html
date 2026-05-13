@@ -535,119 +535,99 @@
 		}
 
 		async function renderMenu() {
-            // (RENDERS BURGER MENU AND PRODUCTS)
-            const spinner = document.getElementById('loading-spinner');
-            const menuContainer = document.getElementById('menu-wrapper');
-            const navContainer = document.getElementById('dynamic-nav-links'); // Get the new nav container       
+			const spinner = document.getElementById('loading-spinner');
+			const menuContainer = document.getElementById('menu-wrapper');
+			const navContainer = document.getElementById('dynamic-nav-links');
 
-            try {
-                const response = await fetch('menu.json');
-                const menuData = await response.json();           
+			try {
+				const response = await fetch('menu.json');
+				const menuData = await response.json();
 
-                let fullHTML = '';
-                let navHTML = ''; // String to hold our navigation links
+				let fullHTML = '';
+				let navHTML = '';
 
-                menuData.forEach(section => {
-                    // 1. Build the Navigation Links (Burger Menu)
-                    navHTML += `<a href="#section-${section.section}" onclick="toggleMenu()">${section.title}</a>`;
+				menuData.forEach(section => {
+					navHTML += `<a href="#section-${section.section}" onclick="toggleMenu()">${section.title}</a>`;
+					fullHTML += `
+						<div id="section-${section.section}">
+							<img src="img/${section.section}-banner.jpg" class="section-banner">
+							<h2 class="section-title">${section.title}</h2>
+					`;
 
-                    // 2. Build the Product Sections (Existing Logic)
-                    fullHTML += `
-                        <div id="section-${section.section}">
-                            <img src="img/${section.section}-banner.jpg" class="section-banner">
-                            <h2 class="section-title">
-								<span class="title-icon"><img src="img/spark-left.png" alt="spark"></span>
-								${section.title}
-								<span class="title-icon"><img src="img/spark-right.png" alt="spark"></span>
-							</h2>
-                    `;
+					section.items.forEach(item => {
+						const descriptionHTML = item.desc ? `<p class="product-desc">${item.desc}</p>` : '';
+						fullHTML += `
+							<div class="product-card">
+								<div class="product-info">
+									<p class="product-name" id="name-${item.nickname}">${item.name}</p>
+									${descriptionHTML}
+									<span class="product-price">$ ${item.price.toLocaleString('es-CO')}</span>
+								</div>
+								<div class="controls">
+									<button class="btn-qty" onclick="updateQty('${item.nickname}', -1)" id="btn-minus-${item.nickname}" disabled>-</button>
+									<span class="qty-display" id="qty-${item.nickname}">0</span>
+									<button class="btn-qty" onclick="updateQty('${item.nickname}', 1)">+</button>
+								</div>
+							</div>
+						`;
+						products[item.nickname] = { name: item.wa_item, price: item.price, packagePrice: item.packagePrice, qty: 0 };
+					});
+					fullHTML += `</div>`;
+				});
 
-                    section.items.forEach(item => {
-                        const descriptionHTML = item.desc ? `<p class="product-desc">${item.desc}</p>` : '';       
+				spinner.style.display = 'none';
+				menuContainer.innerHTML = fullHTML;
+				navContainer.innerHTML = navHTML;
 
-                        fullHTML += `
-                            <div class="product-card">
-                                <div class="product-info">
-                                    <p class="product-name" id="name-${item.nickname}">${item.name}</p>
-                                    ${descriptionHTML}
-                                    <span class="product-price">$ ${item.price.toLocaleString('es-CO')}</span>
-                                </div>
-                                <div class="controls">
-                                    <button class="btn-qty" onclick="updateQty('${item.nickname}', -1)" id="btn-minus-${item.nickname}" disabled>-</button>    
-                                    <span class="qty-display" id="qty-${item.nickname}">0</span>
-                                    <button class="btn-qty" onclick="updateQty('${item.nickname}', 1)">+</button>
-                                </div>
-                            </div>
-                        `;       
+				// --- INSERT PROMO LOGIC HERE ---
+				try {
+					const configResponse = await fetch('config.json');
+					const configData = await configResponse.json();
+					window.appConfig = configData;
 
-                        // Inside the items loop in renderMenu()
-						products[item.nickname] = { 
-							name: item.wa_item, 
-							price: item.price, 
-							packagePrice: item.packagePrice, // Save this here!
-							qty: 0 
-						};
-                    });
-                    fullHTML += `</div>`;
-                });
+					if (configData.storeName) {
+						document.title = `Menú Interactivo | ${configData.storeName}`;
+						const storeNameElement = document.getElementById('header-store-name');
+						if (storeNameElement) storeNameElement.innerText = configData.storeName;
+					}
 
-                // 3. Inject both the Menu and the Navigation
-                spinner.style.display = 'none';
-                menuContainer.innerHTML = fullHTML;
-                navContainer.innerHTML = navHTML; // Push the burger menu links!
+					const now = new Date();
+					const currentHour = now.getHours() + (now.getMinutes() / 60);
+					const todayIndex = now.getDay();
+					
+					// Logic to determine which day's promo rules apply
+					let businessDayIndex = todayIndex;
+					const todayOpeningTime = parseFloat(configData.horario[todayIndex].apertura);
+					const isCurrentlyOpen = isStoreCurrentlyOpen(configData);
 
-                // --- INSERT PROMO LOGIC HERE ---
-                try {
-                    const configResponse = await fetch('config.json');
-                    const configData = await configResponse.json();                 
-                    window.appConfig = configData;  
+					// Shift to "Yesterday" if we are open but today's shift hasn't technically started yet
+					if (isCurrentlyOpen && currentHour < todayOpeningTime) {
+						businessDayIndex = todayIndex === 0 ? 6 : todayIndex - 1;
+					}
 
-                    if (configData.storeName) {
-                        document.title = `Menú Interactivo | ${configData.storeName}`;
-                        const storeNameElement = document.getElementById('header-store-name');
-                        if (storeNameElement) {
-                            storeNameElement.innerText = configData.storeName;
-                        }
-                    }
+					const activeConfig = configData.horario[businessDayIndex];
+					const promoSection = document.getElementById('section-promo');
 
-                    // 1. Get current status and timing
-                    const today = new Date().getDay();
-                    const todayConfig = configData.horario[today];
-                    
-                    // Logic to check if store is currently OPEN based on your horario
-                    // Assuming you have a function called isStoreCurrentlyOpen
-                    const isCurrentlyOpen = isStoreCurrentlyOpen(configData); 
+					if (promoSection) {
+						if (activeConfig && activeConfig.isPromo) {
+							promoSection.style.display = 'block';
+							localStorage.setItem('promo_active_session', 'true');
+							console.log(`Promo activa según el día de negocio: ${businessDayIndex}`);
+						} else {
+							promoSection.style.display = 'none';
+							localStorage.removeItem('promo_active_session');
+						}
+					}
 
-                    const promoSection = document.getElementById('section-promo');
-                    if (promoSection) {
-                        // 2. NEW LOGIC: Trigger if it IS a promo day
-                        if (todayConfig && todayConfig.isPromo) {
-                            promoSection.style.display = 'block';
-                            localStorage.setItem('promo_active_session', 'true'); // Set the flag
-                            console.log("¡Hoy es día de promo!");
-                        } 
-                        // 3. PERSISTENCE: If it's not a promo day anymore, but the store hasn't closed yet
-                        else if (isCurrentlyOpen && localStorage.getItem('promo_active_session') === 'true') {
-                            promoSection.style.display = 'block';
-                            console.log("Promo persistente: Aún no cierran.");
-                        } 
-                        // 4. CLEANUP: If store is closed or it's a new day after closure
-                        else {
-                            promoSection.style.display = 'none';
-                            localStorage.removeItem('promo_active_session'); // Clear the flag
-                        }
-                    }
+				} catch (configError) {
+					console.error("Error loading promo config:", configError);
+				}
 
-                } catch (configError) {
-                    console.error("Error loading promo config:", configError);
-                }
-                // --- END PROMO LOGIC ---       
-
-            } catch (error) {
-                console.error("Error:", error);
-                spinner.innerHTML = "<p>Error al cargar el menú. Revisa tu conexión.</p>";
-            }
-        }
+			} catch (error) {
+				console.error("Error:", error);
+				spinner.innerHTML = "<p>Error al cargar el menú. Revisa tu conexión.</p>";
+			}
+		}
 	
 		function actualizarEstadoTienda() {
 			const dot = document.getElementById('status-dot');
