@@ -547,10 +547,8 @@
 
 				menuData.forEach(section => {
 					navHTML += `<a href="#section-${section.section}" onclick="toggleMenu()">${section.title}</a>`;
-					
-					// Importante: La sección se crea SIEMPRE en el HTML, pero con display:none por defecto
 					fullHTML += `
-						<div id="section-${section.section}" style="display: none;">
+						<div id="section-${section.section}">
 							<img src="img/${section.section}-banner.jpg" class="section-banner">
 							<h2 class="section-title">${section.title}</h2>
 					`;
@@ -580,22 +578,21 @@
 				menuContainer.innerHTML = fullHTML;
 				navContainer.innerHTML = navHTML;
 
-				// Mostrar todas las secciones por defecto, excepto la de promo (que decidiremos abajo)
-				menuData.forEach(section => {
-					if (section.section !== 'promo') {
-						document.getElementById(`section-${section.section}`).style.display = 'block';
-					}
-				});
-
-				// --- LÓGICA DE PROMO ---
+				// --- LÓGICA DE PROMO CORREGIDA ---
 				try {
 					const configResponse = await fetch('config.json');
 					const configData = await configResponse.json();
 					window.appConfig = configData;
 
+					if (configData.storeName) {
+						document.title = `Menú Interactivo | ${configData.storeName}`;
+						const storeNameElement = document.getElementById('header-store-name');
+						if (storeNameElement) storeNameElement.innerText = configData.storeName;
+					}
+
 					const now = new Date();
 					const currentHour = now.getHours() + (now.getMinutes() / 60);
-					const todayIndex = now.getDay();
+					const todayIndex = now.getDay(); 
 					const yesterdayIndex = todayIndex === 0 ? 6 : todayIndex - 1;
 
 					const todayShift = configData.horario[todayIndex];
@@ -603,22 +600,24 @@
 
 					let promoActive = false;
 
-					// 1. Caso: Turno de Hoy (ej: 4pm a 2am)
-					const openT = parseFloat(todayShift.apertura);
-					const closeT = parseFloat(todayShift.cierre);
-					
+					// 1. Usar .open y .close (nombres exactos de tu JSON)
+					const openT = parseFloat(todayShift.open);
+					const closeT = parseFloat(todayShift.close);
+
 					if (todayShift.isPromo) {
-						if (closeT < openT) { // Cruza medianoche
+						// Si el cierre es menor que la apertura (ej: cierra a las 2am), cruza medianoche
+						if (closeT < openT) {
 							if (currentHour >= openT || currentHour < closeT) promoActive = true;
-						} else { // Turno normal
+						} else {
+							// Horario normal (ej: 16 a 24)
 							if (currentHour >= openT && currentHour < closeT) promoActive = true;
 						}
 					}
 
-					// 2. Caso: Cola del turno de ayer (si cerró hoy en la madrugada)
+					// 2. Verificar si venimos de una promo de ayer que cerró hoy de madrugada
 					if (!promoActive && yesterdayShift.isPromo) {
-						const closeY = parseFloat(yesterdayShift.cierre);
-						const openY = parseFloat(yesterdayShift.apertura);
+						const openY = parseFloat(yesterdayShift.open);
+						const closeY = parseFloat(yesterdayShift.close);
 						if (closeY < openY && currentHour < closeY) {
 							promoActive = true;
 						}
@@ -626,16 +625,17 @@
 
 					const promoSection = document.getElementById('section-promo');
 					if (promoSection) {
+						// Forzamos el display basándonos en la lógica
 						promoSection.style.display = promoActive ? 'block' : 'none';
-						console.log("Estado de la promo:", promoActive ? "ACTIVA" : "INACTIVA");
+						console.log(`Promo hoy (${todayIndex}): ${todayShift.isPromo}. ¿Está activa ahora?: ${promoActive}`);
 					}
 
 				} catch (configError) {
-					console.error("Error en config:", configError);
+					console.error("Error en config logic:", configError);
 				}
 
 			} catch (error) {
-				console.error("Error:", error);
+				console.error("Error general:", error);
 				spinner.innerHTML = "<p>Error al cargar el menú.</p>";
 			}
 		}
