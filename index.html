@@ -548,8 +548,10 @@
 
 				menuData.forEach(section => {
 					navHTML += `<a href="#section-${section.section}" onclick="toggleMenu()">${section.title}</a>`;
+					
+					// Importante: La sección se crea SIEMPRE en el HTML, pero con display:none por defecto
 					fullHTML += `
-						<div id="section-${section.section}">
+						<div id="section-${section.section}" style="display: none;">
 							<img src="img/${section.section}-banner.jpg" class="section-banner">
 							<h2 class="section-title">${section.title}</h2>
 					`;
@@ -579,17 +581,18 @@
 				menuContainer.innerHTML = fullHTML;
 				navContainer.innerHTML = navHTML;
 
-				// --- INSERT PROMO LOGIC HERE ---
+				// Mostrar todas las secciones por defecto, excepto la de promo (que decidiremos abajo)
+				menuData.forEach(section => {
+					if (section.section !== 'promo') {
+						document.getElementById(`section-${section.section}`).style.display = 'block';
+					}
+				});
+
+				// --- LÓGICA DE PROMO ---
 				try {
 					const configResponse = await fetch('config.json');
 					const configData = await configResponse.json();
 					window.appConfig = configData;
-
-					if (configData.storeName) {
-						document.title = `Menú Interactivo | ${configData.storeName}`;
-						const storeNameElement = document.getElementById('header-store-name');
-						if (storeNameElement) storeNameElement.innerText = configData.storeName;
-					}
 
 					const now = new Date();
 					const currentHour = now.getHours() + (now.getMinutes() / 60);
@@ -601,21 +604,22 @@
 
 					let promoActive = false;
 
-					// 1. Check if we are in Today's shift
+					// 1. Caso: Turno de Hoy (ej: 4pm a 2am)
 					const openT = parseFloat(todayShift.apertura);
 					const closeT = parseFloat(todayShift.cierre);
+					
 					if (todayShift.isPromo) {
-						if (closeT < openT) { // Overnight shift (e.g., 16 to 02)
+						if (closeT < openT) { // Cruza medianoche
 							if (currentHour >= openT || currentHour < closeT) promoActive = true;
-						} else { // Standard shift (e.g., 08 to 18)
+						} else { // Turno normal
 							if (currentHour >= openT && currentHour < closeT) promoActive = true;
 						}
 					}
 
-					// 2. If not active yet, check if we are in Yesterday's overnight tail
+					// 2. Caso: Cola del turno de ayer (si cerró hoy en la madrugada)
 					if (!promoActive && yesterdayShift.isPromo) {
-						const openY = parseFloat(yesterdayShift.apertura);
 						const closeY = parseFloat(yesterdayShift.cierre);
+						const openY = parseFloat(yesterdayShift.apertura);
 						if (closeY < openY && currentHour < closeY) {
 							promoActive = true;
 						}
@@ -624,20 +628,16 @@
 					const promoSection = document.getElementById('section-promo');
 					if (promoSection) {
 						promoSection.style.display = promoActive ? 'block' : 'none';
-						if (promoActive) {
-							localStorage.setItem('promo_active_session', 'true');
-						} else {
-							localStorage.removeItem('promo_active_session');
-						}
+						console.log("Estado de la promo:", promoActive ? "ACTIVA" : "INACTIVA");
 					}
 
 				} catch (configError) {
-					console.error("Error loading promo config:", configError);
+					console.error("Error en config:", configError);
 				}
 
 			} catch (error) {
 				console.error("Error:", error);
-				spinner.innerHTML = "<p>Error al cargar el menú. Revisa tu conexión.</p>";
+				spinner.innerHTML = "<p>Error al cargar el menú.</p>";
 			}
 		}
 	
