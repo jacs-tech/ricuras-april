@@ -504,26 +504,7 @@
 				const configData = await configRes.json();
 
 				// 1. Asignamos al objeto global para que otros botones lo usen
-				window.appConfig = configData;
-
-				// --- NEW PROMO DETERMINATION LOGIC ---
-				const today = new Date().getDay();
-				const todayConfig = configData.horario[today];
-				
-				// Assuming your existing logic or helper to check if store is open
-				const isCurrentlyOpen = isStoreCurrentlyOpen(configData); 
-				const wasPromoActive = localStorage.getItem('promo_active_session') === 'true';
-
-				// Set the global status: It's active if it's a promo day OR if the store hasn't closed yet
-				window.isPromoActive = (todayConfig && todayConfig.isPromo) || (isCurrentlyOpen && wasPromoActive);
-
-				// Update the persistence flag for the next refresh
-				if (todayConfig && todayConfig.isPromo) {
-					localStorage.setItem('promo_active_session', 'true');
-				} else if (!isCurrentlyOpen) {
-					localStorage.removeItem('promo_active_session');
-				}
-				// --- END PROMO LOGIC ---
+       			window.appConfig = configData;
 
 				applyStoreConfig(configData);
 
@@ -554,85 +535,119 @@
 		}
 
 		async function renderMenu() {
-			// (RENDERS BURGER MENU AND PRODUCTS)
-			const spinner = document.getElementById('loading-spinner');
-			const menuContainer = document.getElementById('menu-wrapper');
-			const navContainer = document.getElementById('dynamic-nav-links');       
+            // (RENDERS BURGER MENU AND PRODUCTS)
+            const spinner = document.getElementById('loading-spinner');
+            const menuContainer = document.getElementById('menu-wrapper');
+            const navContainer = document.getElementById('dynamic-nav-links'); // Get the new nav container       
 
-			try {
-				// We use the data already fetched or fetch it here as you had it
-				const response = await fetch('menu.json');
-				const menuData = await response.json();           
+            try {
+                const response = await fetch('menu.json');
+                const menuData = await response.json();           
 
-				let fullHTML = '';
-				let navHTML = ''; 
+                let fullHTML = '';
+                let navHTML = ''; // String to hold our navigation links
 
-				menuData.forEach(section => {
-					// 1. SKIP logic: If it's a promo section but the global flag (from initApp) is false, skip it.
-					if (section.section === 'promo' && !window.isPromoActive) {
-						return; 
-					}
-					
-					// 2. Build the Navigation Links
-					navHTML += `<a href="#section-${section.section}" onclick="toggleMenu()">${section.title}</a>`;
+                menuData.forEach(section => {
+                    // 1. Build the Navigation Links (Burger Menu)
+                    navHTML += `<a href="#section-${section.section}" onclick="toggleMenu()">${section.title}</a>`;
 
-					// 3. Build the Product Sections
-					fullHTML += `
-						<div id="section-${section.section}">
-							<img src="img/${section.section}-banner.jpg" class="section-banner">
-							<h2 class="section-title">${section.title}</h2>
-					`;
+                    // 2. Build the Product Sections (Existing Logic)
+                    fullHTML += `
+                        <div id="section-${section.section}">
+                            <img src="img/${section.section}-banner.jpg" class="section-banner">
+                            <h2 class="section-title">
+								<span class="title-icon"><img src="img/spark-left.png" alt="spark"></span>
+								${section.title}
+								<span class="title-icon"><img src="img/spark-right.png" alt="spark"></span>
+							</h2>
+                    `;
 
-					section.items.forEach(item => {
-						const descriptionHTML = item.desc ? `<p class="product-desc">${item.desc}</p>` : '';       
+                    section.items.forEach(item => {
+                        const descriptionHTML = item.desc ? `<p class="product-desc">${item.desc}</p>` : '';       
 
-						fullHTML += `
-							<div class="product-card">
-								<div class="product-info">
-									<p class="product-name" id="name-${item.nickname}">${item.name}</p>
-									${descriptionHTML}
-									<span class="product-price">$ ${item.price.toLocaleString('es-CO')}</span>
-								</div>
-								<div class="controls">
-									<button class="btn-qty" onclick="updateQty('${item.nickname}', -1)" id="btn-minus-${item.nickname}" disabled>-</button>    
-									<span class="qty-display" id="qty-${item.nickname}">0</span>
-									<button class="btn-qty" onclick="updateQty('${item.nickname}', 1)">+</button>
-								</div>
-							</div>
-						`;       
+                        fullHTML += `
+                            <div class="product-card">
+                                <div class="product-info">
+                                    <p class="product-name" id="name-${item.nickname}">${item.name}</p>
+                                    ${descriptionHTML}
+                                    <span class="product-price">$ ${item.price.toLocaleString('es-CO')}</span>
+                                </div>
+                                <div class="controls">
+                                    <button class="btn-qty" onclick="updateQty('${item.nickname}', -1)" id="btn-minus-${item.nickname}" disabled>-</button>    
+                                    <span class="qty-display" id="qty-${item.nickname}">0</span>
+                                    <button class="btn-qty" onclick="updateQty('${item.nickname}', 1)">+</button>
+                                </div>
+                            </div>
+                        `;       
 
+                        // Inside the items loop in renderMenu()
 						products[item.nickname] = { 
 							name: item.wa_item, 
 							price: item.price, 
-							packagePrice: item.packagePrice, 
+							packagePrice: item.packagePrice, // Save this here!
 							qty: 0 
 						};
-					});
-					fullHTML += `</div>`;
-				});
+                    });
+                    fullHTML += `</div>`;
+                });
 
-				// 4. Inject the content
-				spinner.style.display = 'none';
-				menuContainer.innerHTML = fullHTML;
-				navContainer.innerHTML = navHTML;
+                // 3. Inject both the Menu and the Navigation
+                spinner.style.display = 'none';
+                menuContainer.innerHTML = fullHTML;
+                navContainer.innerHTML = navHTML; // Push the burger menu links!
 
-				// 5. Update UI using the global configData already set by initApp
-				if (window.appConfig) {
-					const configData = window.appConfig;
-					if (configData.storeName) {
-						document.title = `Menú Interactivo | ${configData.storeName}`;
-						const storeNameElement = document.getElementById('header-store-name');
-						if (storeNameElement) {
-							storeNameElement.innerText = configData.storeName;
-						}
-					}
-				}
+                // --- INSERT PROMO LOGIC HERE ---
+                try {
+                    const configResponse = await fetch('config.json');
+                    const configData = await configResponse.json();                 
+                    window.appConfig = configData;  
 
-			} catch (error) {
-				console.error("Error:", error);
-				if (spinner) spinner.innerHTML = "<p>Error al cargar el menú. Revisa tu conexión.</p>";
-			}
-		}
+                    if (configData.storeName) {
+                        document.title = `Menú Interactivo | ${configData.storeName}`;
+                        const storeNameElement = document.getElementById('header-store-name');
+                        if (storeNameElement) {
+                            storeNameElement.innerText = configData.storeName;
+                        }
+                    }
+
+                    // 1. Get current status and timing
+                    const today = new Date().getDay();
+                    const todayConfig = configData.horario[today];
+                    
+                    // Logic to check if store is currently OPEN based on your horario
+                    // Assuming you have a function called isStoreCurrentlyOpen
+                    const isCurrentlyOpen = isStoreCurrentlyOpen(configData); 
+
+                    const promoSection = document.getElementById('section-promo');
+                    if (promoSection) {
+                        // 2. NEW LOGIC: Trigger if it IS a promo day
+                        if (todayConfig && todayConfig.isPromo) {
+                            promoSection.style.display = 'block';
+                            localStorage.setItem('promo_active_session', 'true'); // Set the flag
+                            console.log("¡Hoy es día de promo!");
+                        } 
+                        // 3. PERSISTENCE: If it's not a promo day anymore, but the store hasn't closed yet
+                        else if (isCurrentlyOpen && localStorage.getItem('promo_active_session') === 'true') {
+                            promoSection.style.display = 'block';
+                            console.log("Promo persistente: Aún no cierran.");
+                        } 
+                        // 4. CLEANUP: If store is closed or it's a new day after closure
+                        else {
+                            promoSection.style.display = 'none';
+                            localStorage.removeItem('promo_active_session'); // Clear the flag
+                        }
+                    }
+
+                } catch (configError) {
+                    console.error("Error loading promo config:", configError);
+                }
+                // --- END PROMO LOGIC ---       
+
+            } catch (error) {
+                console.error("Error:", error);
+                spinner.innerHTML = "<p>Error al cargar el menú. Revisa tu conexión.</p>";
+            }
+        }
 	
 		function actualizarEstadoTienda() {
 			const dot = document.getElementById('status-dot');
