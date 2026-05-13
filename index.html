@@ -504,7 +504,26 @@
 				const configData = await configRes.json();
 
 				// 1. Asignamos al objeto global para que otros botones lo usen
-       			window.appConfig = configData;
+				window.appConfig = configData;
+
+				// --- NEW PROMO DETERMINATION LOGIC ---
+				const today = new Date().getDay();
+				const todayConfig = configData.horario[today];
+				
+				// Assuming your existing logic or helper to check if store is open
+				const isCurrentlyOpen = isStoreCurrentlyOpen(configData); 
+				const wasPromoActive = localStorage.getItem('promo_active_session') === 'true';
+
+				// Set the global status: It's active if it's a promo day OR if the store hasn't closed yet
+				window.isPromoActive = (todayConfig && todayConfig.isPromo) || (isCurrentlyOpen && wasPromoActive);
+
+				// Update the persistence flag for the next refresh
+				if (todayConfig && todayConfig.isPromo) {
+					localStorage.setItem('promo_active_session', 'true');
+				} else if (!isCurrentlyOpen) {
+					localStorage.removeItem('promo_active_session');
+				}
+				// --- END PROMO LOGIC ---
 
 				applyStoreConfig(configData);
 
@@ -548,16 +567,19 @@
                 let navHTML = ''; // String to hold our navigation links
 
                 menuData.forEach(section => {
-                    // 1. Build the Navigation Links (Burger Menu)
+                    // If this is the promo section but the global flag says it's not active, skip it
+					if (section.section === 'promo' && !window.isPromoActive) {
+						return; 
+					}
+					
+					// 1. Build the Navigation Links (Burger Menu)
                     navHTML += `<a href="#section-${section.section}" onclick="toggleMenu()">${section.title}</a>`;
 
                     // 2. Build the Product Sections (Existing Logic)
                     fullHTML += `
                         <div id="section-${section.section}">
                             <img src="img/${section.section}-banner.jpg" class="section-banner">
-                            <h2 class="section-title">
-								<h2 class="section-title">${section.title}</h2>
-							</h2>
+                            <h2 class="section-title">${section.title}</h2>
                     `;
 
                     section.items.forEach(item => {
