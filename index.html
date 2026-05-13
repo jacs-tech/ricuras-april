@@ -594,27 +594,39 @@
 					const now = new Date();
 					const currentHour = now.getHours() + (now.getMinutes() / 60);
 					const todayIndex = now.getDay();
-					
-					// Logic to determine which day's promo rules apply
-					let businessDayIndex = todayIndex;
-					const todayOpeningTime = parseFloat(configData.horario[todayIndex].apertura);
-					const isCurrentlyOpen = isStoreCurrentlyOpen(configData);
+					const yesterdayIndex = todayIndex === 0 ? 6 : todayIndex - 1;
 
-					// Shift to "Yesterday" if we are open but today's shift hasn't technically started yet
-					if (isCurrentlyOpen && currentHour < todayOpeningTime) {
-						businessDayIndex = todayIndex === 0 ? 6 : todayIndex - 1;
+					const todayShift = configData.horario[todayIndex];
+					const yesterdayShift = configData.horario[yesterdayIndex];
+
+					let promoActive = false;
+
+					// 1. Check if we are in Today's shift
+					const openT = parseFloat(todayShift.apertura);
+					const closeT = parseFloat(todayShift.cierre);
+					if (todayShift.isPromo) {
+						if (closeT < openT) { // Overnight shift (e.g., 16 to 02)
+							if (currentHour >= openT || currentHour < closeT) promoActive = true;
+						} else { // Standard shift (e.g., 08 to 18)
+							if (currentHour >= openT && currentHour < closeT) promoActive = true;
+						}
 					}
 
-					const activeConfig = configData.horario[businessDayIndex];
-					const promoSection = document.getElementById('section-promo');
+					// 2. If not active yet, check if we are in Yesterday's overnight tail
+					if (!promoActive && yesterdayShift.isPromo) {
+						const openY = parseFloat(yesterdayShift.apertura);
+						const closeY = parseFloat(yesterdayShift.cierre);
+						if (closeY < openY && currentHour < closeY) {
+							promoActive = true;
+						}
+					}
 
+					const promoSection = document.getElementById('section-promo');
 					if (promoSection) {
-						if (activeConfig && activeConfig.isPromo) {
-							promoSection.style.display = 'block';
+						promoSection.style.display = promoActive ? 'block' : 'none';
+						if (promoActive) {
 							localStorage.setItem('promo_active_session', 'true');
-							console.log(`Promo activa según el día de negocio: ${businessDayIndex}`);
 						} else {
-							promoSection.style.display = 'none';
 							localStorage.removeItem('promo_active_session');
 						}
 					}
