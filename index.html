@@ -833,29 +833,19 @@
 
 			const mensajeFinal = orderText + infoEntrega;
 			
-			// 1. Abrir WhatsApp primero
+			document.getElementById('delivery-modal').style.display = 'none';
+			document.getElementById('cart-modal').classList.remove('show');
+
+			// Abrir WhatsApp con el mensaje formateado
 			window.open(`https://wa.me/${numeroWhatsAppStore}?text=${mensajeFinal}`);
 
-			// 2. REINICIO DE DATOS (Vital para que el carrito no persista)
-			Object.keys(products).forEach(key => {
-				products[key].qty = 0; // Ponemos el contador interno en cero
-			});
+			cerrarModal();
 
-			// 3. REINICIO VISUAL (Reutilizando tus funciones existentes)
 			resetProductNamesStyle();
 			deshabilitarBotonesMenos();
 			gestionarVisibilidadReset();
-			
-			// Actualizamos el icono del carrito a vacío y refrescamos la lista
-			const cartImg = document.getElementById('cart-icon-img');
-			if (cartImg) cartImg.src = "img/cart-empty.png";
-			
-			renderCart(); // Esto hará que el modal diga "El carrito está vacío"
-
-			// 4. CIERRE DE MODALES
-			document.getElementById('delivery-modal').style.display = 'none';
 			const modal = document.getElementById('cart-modal');
-			if (modal) modal.classList.remove('show');
+			modal.classList.remove('show');			
 
 			logAnalytics("WhatsApp Order", "User clicked send order button");           
 		}
