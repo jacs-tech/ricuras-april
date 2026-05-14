@@ -1,6 +1,5 @@
 {
   "whatsapp": 573054479114,
-  "map_url": "https://maps.app.goo.gl/sx1tKqTXW2FderRP7",
   "chargePackage": true,
   "storeName": "Ricuras April",
   "repoName": "ricuras-april",
@@ -23,7 +22,7 @@
     {
       "open": 16,
       "close": 24,
-      "isPromo": false
+      "isPromo": true
     },
     {
       "open": 16,
