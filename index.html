@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cargando Menú...</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/icon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/icon-16x16.png">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="img/icon-192.png">
     <style>
@@ -16,6 +16,7 @@
             --light: #f9f9f9;
             --white: #ffffff;
             --black: #000000;		
+			--item: #2948e1;
         }
 
         body {
@@ -143,13 +144,13 @@
 
         .product-card {
             background: var(--white); margin: 10px; padding: 15px;
-            border-radius: 8px; display: flex; justify-content: space-between;
-            align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border-radius: 15px; display: flex; justify-content: space-between;
+            align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
         .product-info { flex: 1; }
-        .product-name { margin: 0; font-size: 1.1rem; transition: 0.3s; }
-        .product-name.active { font-weight: 800; color: var(--primary); }
-        .product-desc { font-size: 0.8rem; color: #666; margin: 5px 0; }
+        .product-name { margin: 0; font-size: 1.2rem; transition: 0.3s; color: var(--item); }
+        .product-name.active { font-weight: bold; color: var(--primary); }
+        .product-desc { font-size: 1rem; color: #555555; margin: 5px 0; }
         .product-price { font-weight: 600; color: var(--dark); }
 
         .controls { display: flex; align-items: center; gap: 10px; margin-left: 15px; }
@@ -236,7 +237,7 @@
             /* Estética del botón */
             background-color: #ffffff;
             color: #666;	    
-                /* Transición para que no aparezca de golpe */
+			/* Transición para que no aparezca de golpe */
             transition: background-color 0.2s ease; 
         }
 
@@ -262,15 +263,6 @@
             padding: 12px;
             cursor: pointer; 	
         }
-
-		.delivery-notice {
-			font-size: 1rem;
-			color: #555555;
-			text-align:left ;
-			margin-top: 10px;
-			font-style: italic;
-			padding: 0 10px;
-		}
 
 		.delivery-notice {
 			font-size: 1rem;
@@ -574,7 +566,13 @@
 								</div>
 							</div>
 						`;
-						products[item.nickname] = { name: item.wa_item, price: item.price, packagePrice: item.packagePrice, qty: 0 };
+						products[item.nickname] = { 
+							name: item.wa_item, 
+							price: item.price, 
+							packagePrice: 
+							item.packagePrice, 
+							qty: 0 
+						};
 					});
 					fullHTML += `</div>`;
 				});
@@ -968,22 +966,21 @@
 				// Reset counters in your products object
 				Object.keys(products).forEach(key => {
 					products[key].qty = 0;
-
 				});
 		
-			// Reset the visual counters on the product page
+				// Reset the visual counters on the product page
 				resetVisualCounters();
 
-			const cartImg = document.getElementById('cart-icon-img');
-			cartImg.src = "img/cart-empty.png"; // Icon when cart is empty
+				const cartImg = document.getElementById('cart-icon-img');
+				cartImg.src = "img/cart-empty.png"; // Icon when cart is empty
 		
 				// Trigger your existing function that refreshes the list and total
-			renderCart(); 
-			resetProductNamesStyle();
-			deshabilitarBotonesMenos();
-			gestionarVisibilidadReset();
+				renderCart(); 
+				resetProductNamesStyle();
+				deshabilitarBotonesMenos();
+				gestionarVisibilidadReset();
 		
-			// Auto-hide modal after 3 seconds (3000 milliseconds)
+				// Auto-hide modal after 3 seconds (3000 milliseconds)
 				setTimeout(() => {
 					const modal = document.getElementById('cart-modal');
 					if (modal) {
@@ -1026,9 +1023,9 @@
 			botonesMenos.forEach(boton => {
 				boton.disabled = true;
 				
-			// Substracting sound
-			sound = document.getElementById('sound-sub');
-			sound.play().catch(e => console.log("Audio play blocked:", e));
+				// Substracting sound
+				sound = document.getElementById('sound-sub');
+				sound.play().catch(e => console.log("Audio play blocked:", e));
 				
 				// Visual feedback to show they are inactive
 				boton.style.opacity = "1";
