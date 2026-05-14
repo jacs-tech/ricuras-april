@@ -131,7 +131,7 @@
         }
 
         .section-banner { width: 100%; height: 150px; object-fit: cover; margin-top: 10px; }
-        .section-title { 
+        .section-title { 			
             padding: 15px 20px; 
 			background-image: url('img/title-bg.jpg');
 			background-size: cover;    /* Important: Scales the image to cover the entire area */
@@ -180,9 +180,15 @@
 			background-image: none;
 			background-color: #EE5825;			
 			color: var(--white);            /* Example: change text color */
-			font-size: 1.2rem;         /* Example: make it stand out */
+			font-weight: 600;         /* Example: make it stand out */
 			text-transform: uppercase; /* Example: make it all caps */
-		}
+
+			/* --- NUEVAS PROPIEDADES PARA CENTRAR --- */
+			text-align: center;       /* Centra el texto horizontalmente */
+			display: block;           /* Asegura que ocupe todo el ancho disponible */
+			width: 100%;              /* Fuerza el ancho total */
+			margin: 0;                /* Opcional: elimina márgenes que puedan desplazar el título */
+		}	
 
         .cart-float {
             position: fixed; bottom: 15px; right: 20px;
