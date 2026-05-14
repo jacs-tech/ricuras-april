@@ -412,35 +412,35 @@
       {
         "nickname": "bp6",
         "name": "MALTIN POLAR",
-        "price": 6500,
+        "price": 7500,
         "wa_item": "Maltin Polar",
         "packagePrice": 0
       },
       {
         "nickname": "bp7",
         "name": "FRESCOLITA",
-        "price": 8000,
+        "price": 7500,
         "wa_item": "Frescolita",
         "packagePrice": 0
       },
       {
         "nickname": "bp8",
         "name": "POLARCITA",
-        "price": 7000,
+        "price": 7500,
         "wa_item": "Polarcita",
         "packagePrice": 0
       },
       {
         "nickname": "bp9",
         "name": "POLAR LIGHT",
-        "price": 6500,
+        "price": 7500,
         "wa_item": "Polar Light",
         "packagePrice": 0
       },
       {
         "nickname": "bp10",
         "name": "ZULIA",
-        "price": 6500,
+        "price": 7500,
         "wa_item": "Zulia",
         "packagePrice": 0
       },
@@ -497,34 +497,6 @@
         "name": "JUGO DEL VALLE 1.5 LT",
         "price": 5500,
         "wa_item": "Jugo Valle 1.5 lt",
-        "packagePrice": 0
-      },
-      {
-        "nickname": "bf6",
-        "name": "GOLDEN MANZANA",
-        "price": 20000,
-        "wa_item": "Golden Manzana 1.5 lt",
-        "packagePrice": 0
-      },
-      {
-        "nickname": "bf7",
-        "name": "GOLDEN NARANJA",
-        "price": 20000,
-        "wa_item": "Golden Naranja 1.5 lt",
-        "packagePrice": 0
-      },
-      {
-        "nickname": "bf8",
-        "name": "RICO MALT",
-        "price": 24000,
-        "wa_item": "Riko Malt 1.5 lt",
-        "packagePrice": 0
-      },
-      {
-        "nickname": "bf9",
-        "name": "CHICA DON SIMÓN",
-        "price": 19500,
-        "wa_item": "Chicha Don Simón 1.5 lt",
         "packagePrice": 0
       }
     ]
