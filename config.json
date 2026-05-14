@@ -16,9 +16,9 @@
       "isPromo": true
     },
     {
-      "open": 15,
-      "close": 24,
-      "isPromo": true
+      "open": null,
+      "close": null,
+      "isPromo": false
     },
     {
       "open": 15,

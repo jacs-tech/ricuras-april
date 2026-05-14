@@ -840,13 +840,6 @@
 			window.open(`https://wa.me/${numeroWhatsAppStore}?text=${mensajeFinal}`);
 
 			cerrarModal();
-
-			resetProductNamesStyle();
-			deshabilitarBotonesMenos();
-			gestionarVisibilidadReset();
-			const modal = document.getElementById('cart-modal');
-			modal.classList.remove('show');			
-
 			logAnalytics("WhatsApp Order", "User clicked send order button");           
 		}
 		
