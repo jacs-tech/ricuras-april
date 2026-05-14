@@ -793,42 +793,56 @@
 			// (PREPARES WHATSAPP MSG WITH THE ORDER)
 			const nombre = document.getElementById('delivery-name').value;
 			const direccionManual = document.getElementById('delivery-address').value;
-		
+
 			if (!nombre || (!direccionManual && !urlUbicacion)) {
 				alert("Por favor completa el nombre y la dirección.");
 				return;
 			}
-		
+
 			let total = 0;
+			let totalPackageCharge = 0;
+			const shouldChargePackage = window.appConfig && window.appConfig.chargePackage;
 			let store = window.appConfig.storeName || "la tienda";
+			
 			let orderText = encodeURIComponent(`¡Hola ${store}! Quisiera hacer el siguiente pedido:\n\n`);
-		
+
 			// Bucle para extraer productos del carrito
 			Object.values(products).forEach(p => {
 				if (p.qty > 0) {
 					const subtotal = p.price * p.qty;
 					total += subtotal;
-					orderText += `- ${p.name} x ${p.qty}%0A  subtotal: $ ${subtotal.toLocaleString()}%0A`;
+
+					// Calculate package charge if enabled
+					if (shouldChargePackage && p.packagePrice > 0) {
+						totalPackageCharge += (p.packagePrice * p.qty);
+					}
+
+					orderText += encodeURIComponent(`- ${p.name} x ${p.qty}\n  subtotal: $ ${subtotal.toLocaleString('es-CO')}\n`);
 				}
 			});
-		
-			orderText += `%0A*Total: $ ${total.toLocaleString()}*%0A`;
-		
+
+			// Add the Package line to the message if there is a charge
+			if (totalPackageCharge > 0) {
+				total += totalPackageCharge;
+				orderText += encodeURIComponent(`\nCaja icopor subtotal: $ ${totalPackageCharge.toLocaleString('es-CO')}\n`);
+			}
+
+			orderText += encodeURIComponent(`\n*Total: $ ${total.toLocaleString('es-CO')}*\n`);
+
 			// Info de entrega
-			let infoEntrega = `%0A👤 *Recibe:* ${nombre}%0A📍 *Dirección:* ${direccionManual}`;
-			if (urlUbicacion) infoEntrega += `%0A🗺️ *Mapa:* ${urlUbicacion}`;
-		
+			let infoEntrega = encodeURIComponent(`\n👤 *Recibe:* ${nombre}\n📍 *Dirección:* ${direccionManual}`);
+			if (urlUbicacion) infoEntrega += encodeURIComponent(`\n🗺️ *Mapa:* ${urlUbicacion}`);
+
 			const mensajeFinal = orderText + infoEntrega;
 			
 			document.getElementById('delivery-modal').style.display = 'none';
 			document.getElementById('cart-modal').classList.remove('show');
-		
+
 			// Abrir WhatsApp con el mensaje formateado
-			// Usamos template literals (las comillas invertidas ``) para meter la variable
 			window.open(`https://wa.me/${numeroWhatsAppStore}?text=${mensajeFinal}`);
-		
+
 			cerrarModal();
-			logAnalytics("WhatsApp Order", "User clicked send order button");			
+			logAnalytics("WhatsApp Order", "User clicked send order button");           
 		}
 		
 		function obtenerGeo() {
