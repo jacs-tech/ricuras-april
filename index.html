@@ -1142,23 +1142,26 @@
 		}	
 				
 		window.onclick = function(event) {
-			// --- 1. LÓGICA PARA EL HORARIO (SCHEDULE BOX) ---
-			// Si el clic NO fue en el texto de estado ("Abierto/Cerrado") 
-			// y NO fue dentro de la caja de horarios misma...
-			if (!event.target.matches('#status-text') && !event.target.closest('#schedule-box')) {
-				const box = document.getElementById('schedule-box');
-				if (box && box.classList.contains('show')) {
-					box.classList.remove('show');
+			const dropdown = document.getElementById('dropdown');
+			const menuIcon = document.getElementById('menu-icon');
+			const scheduleBox = document.getElementById('schedule-box');
+			const statusText = document.getElementById('status-text');
+
+			// --- 1. LÓGICA PARA EL DROPDOWN ---
+			// Si el menú está abierto...
+			if (dropdown && dropdown.classList.contains('show')) {
+				// Y el clic NO fue en el botón del menú (ni en sus hijos como el ☰)
+				// Y el clic NO fue dentro del contenido del dropdown
+				if (!menuIcon.contains(event.target) && !dropdown.contains(event.target)) {
+					dropdown.classList.remove('show');
 				}
 			}
 
-			// --- 2. LÓGICA PARA EL DROPDOWN MENU ---
-			// Si el clic NO fue en el icono/botón del menú
-			// y NO fue dentro del contenedor del dropdown...
-			if (!event.target.matches('#menu-icon') && !event.target.closest('#dropdown')) {
-				const dropdown = document.getElementById('dropdown');
-				if (dropdown && dropdown.classList.contains('show')) {
-					dropdown.classList.remove('show');
+			// --- 2. LÓGICA PARA EL HORARIO ---
+			if (scheduleBox && scheduleBox.classList.contains('show')) {
+				// Si el clic NO fue en el texto de estado ni dentro de la caja de horarios
+				if (statusText !== event.target && !scheduleBox.contains(event.target)) {
+					scheduleBox.classList.remove('show');
 				}
 			}
 		};
