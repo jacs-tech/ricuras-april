@@ -342,6 +342,49 @@
             border-bottom: 1px solid #eee;	
         }
 
+		.payment-item {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			background: #f9f9f9;
+			padding: 12px;
+			border-radius: 8px;
+			margin-bottom: 10px;
+			border: 1px solid #eee;
+		}
+
+		.payment-info {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.payment-label {
+			font-weight: bold;
+			font-size: 0.85rem;
+			color: #333;
+		}
+
+		.payment-value {
+			font-family: monospace;
+			font-size: 1.1rem;
+			color: #EE5825;
+		}
+
+		.btn-copy {
+			background: #EE5825;
+			color: white;
+			border: none;
+			padding: 8px 12px;
+			border-radius: 5px;
+			cursor: pointer;
+			font-size: 0.8rem;
+		}
+
+		.btn-copy:active {
+			transform: scale(0.95);
+			background: #d44a1d;
+		}
+
 	    .day-name { font-weight: 600; }
     </style>
 </head>
@@ -503,6 +546,26 @@
 			<div class="modal-actions">
 				<button onclick="cerrarModal()" class="btn-cancel">Cancelar</button>
 				<button onclick="confirmarEnvio()" class="btn-send">Enviar Pedido</button>
+			</div>
+		</div>
+
+		<div id="payment-modal" class="modal-overlay" style="display: none;">
+			<div class="modal-content">
+				<h3>Información de Pago</h3>
+				<p style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">
+					Selecciona un método para copiar los datos y realiza tu transferencia.
+				</p>
+				
+				<div id="payment-methods-list">
+					</div>
+
+				<p style="margin-top: 20px; font-weight: bold; color: #EE5825; font-size: 0.9rem;">
+					💡 Copia los datos y abre tu aplicación de pago favorita.
+				</p>
+
+				<div class="modal-actions">
+					<button onclick="document.getElementById('payment-modal').style.display='none'" class="btn-cancel">Cerrar</button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -900,6 +963,52 @@
 			}
 		}
 
+		// 1. Escuchar el cambio en los radio buttons
+		document.querySelectorAll('input[name="payment-mode"]').forEach(radio => {
+			radio.addEventListener('change', function() {
+				if (this.value === 'Transferencia') {
+					abrirModalPago();
+				}
+			});
+		});
+
+		function abrirModalPago() {
+			const listContainer = document.getElementById('payment-methods-list');
+			listContainer.innerHTML = ''; // Limpiar lista previa
+
+			// Asumimos que 'window.appConfig' tiene los datos de config.json
+			const methods = window.appConfig.paymentMethods;
+
+			Object.values(methods).forEach(method => {
+				// Solo mostrar si tiene información (B22, B23 o B24 no están vacíos)
+				if (method.info && method.info.trim() !== "") {
+					const item = document.createElement('div');
+					item.className = 'payment-item';
+					item.innerHTML = `
+						<div class="payment-info">
+							<span class="payment-label">${method.label}</span>
+							<span class="payment-value">${method.info}</span>
+						</div>
+						<button class="btn-copy" onclick="copiarAlPortapapeles('${method.info}')">
+							Copiar
+						</button>
+					`;
+					listContainer.appendChild(item);
+				}
+			});
+
+			document.getElementById('payment-modal').style.display = 'flex';
+		}
+
+		function copiarAlPortapapeles(texto) {
+			navigator.clipboard.writeText(texto).then(() => {
+				alert("Copiado al portapapeles: " + texto);
+				// Cerrar el modal automáticamente después de copiar
+				document.getElementById('payment-modal').style.display = 'none';
+			}).catch(err => {
+				console.error('Error al copiar: ', err);
+			});
+		}
 
 		// 4. === INTERFAZ AND MODALES (UI/UX) === 
 		// FUNCTIONS THAT OPENS, CLOSES, AND SHOW STUFF. THEY ARE VISUAL

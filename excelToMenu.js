@@ -28,7 +28,22 @@ const config = {
     // New Automation Fields
     storeName: configRaw[17] ? configRaw[17][1] : 'Mi Tienda',    // Cell B18
     repoName: configRaw[18] ? configRaw[18][1] : '',
-    horario: []   
+    horario: [],
+    // NUEVA PARTE: Extracción de Métodos de Pago
+    paymentMethods: {
+        banco: {
+            label: configRaw[21] ? configRaw[21][0] : 'Cuenta Bancaria', // A22
+            info: configRaw[21] ? configRaw[21][1] : ''                  // B22
+        },
+        nequi: {
+            label: configRaw[22] ? configRaw[22][0] : 'Nequi',           // A23
+            info: configRaw[22] ? configRaw[22][1] : ''                  // B23
+        },
+        breb: {
+            label: configRaw[23] ? configRaw[23][0] : 'Bre-B',            // A24
+            info: configRaw[23] ? configRaw[23][1] : ''                  // B24
+        }
+    } 
 };
 
 // Loop through the schedule rows (Index 5 to 11)
@@ -47,7 +62,7 @@ for (let i = 5; i <= 11; i++) {
 }
 
 fs.writeFileSync('config.json', JSON.stringify(config, null, 2));
-console.log('✅ config.json generated successfully!');
+console.log('✅ config.json generated successfully (with payment methods)!');
 // --- END OF NEW PART ---
 
 // YOUR EXISTING MENU CODE STARTS HERE

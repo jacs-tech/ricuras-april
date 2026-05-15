@@ -40,5 +40,19 @@
       "close": 2,
       "isPromo": true
     }
-  ]
+  ],
+  "paymentMethods": {
+    "banco": {
+      "label": "Bancolombia (ahorros)",
+      "info": "750-0000-3660"
+    },
+    "nequi": {
+      "label": "Nequi",
+      "info": 3012669163
+    },
+    "breb": {
+      "label": "Llave Bre-B",
+      "info": "@WCM551"
+    }
+  }
 }
