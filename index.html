@@ -468,6 +468,16 @@
 			<label>Nombre de quien recibe:</label>
 			<input type="text" id="delivery-name" placeholder="Ej. Juan Pérez">
 
+			<label>Número de teléfono:</label>
+			<div style="display: flex; gap: 10px; margin-bottom: 10px;">
+				<input type="tel" id="delivery-phone" placeholder="Ej. 3001234567" style="flex-grow: 1;">
+				<button type="button" id="btn-contacts" onclick="seleccionarContacto()" 
+						style="background: #eee; border: 1px solid #ccc; border-radius: 5px; padding: 0 10px; cursor: pointer;" 
+						title="Seleccionar de mis contactos">
+					👤+
+				</button>
+			</div>
+
 			<label>Forma de pago:</label>
 			<div class="payment-options" style="display: flex; gap: 20px; margin: 10px 0;">
 				<label style="display: flex; align-items: center; cursor: pointer; font-weight: normal;">
@@ -815,6 +825,7 @@
 			const direccionManual = document.getElementById('delivery-address').value;
 			const pagoSeleccionado = document.querySelector('input[name="payment-mode"]:checked').value;
 			const notas = document.getElementById('delivery-notes').value;
+			const telefono = document.getElementById('delivery-phone').value;
 
 			if (!nombre || (!direccionManual && !urlUbicacion)) {
 				alert("Por favor completa el nombre y la dirección.");
@@ -852,7 +863,7 @@
 			orderText += encodeURIComponent(`\n*Total: $ ${total.toLocaleString('es-CO')}*\n`);
 
 			// Info de entrega
-			let infoEntrega = encodeURIComponent(`\n👤 *Recibe:* ${nombre}\n📍 *Dirección:* ${direccionManual}`);
+			let infoEntrega = encodeURIComponent(`\n👤 *Recibe:* ${nombre}\n📞 *Tel:* ${telefono}\n📍 *Dirección:* ${direccionManual}`);
 			if (urlUbicacion) infoEntrega += encodeURIComponent(`\n🗺️ *Mapa:* ${urlUbicacion}\n`);
 
 			infoEntrega += encodeURIComponent(`\n💰 *Forma de pago:* ${pagoSeleccionado}\n`);
@@ -1141,6 +1152,36 @@
 				});
 			} catch (err) {
 				console.error("Analytics Error:", err);
+			}
+		}
+
+		async function seleccionarContacto() {
+			// Verificamos si el navegador soporta la API de contactos
+			const supported = ('contacts' in navigator && 'ContactsManager' in window);
+
+			if (supported) {
+				try {
+					// Pedimos permiso para leer el nombre y el número de teléfono
+					const props = ['name', 'tel'];
+					const opts = { multiple: false }; // Solo queremos un número
+					const contacts = await navigator.contacts.select(props, opts);
+
+					if (contacts.length > 0) {
+						const contact = contacts[0];
+						// Si tiene teléfono, lo limpiamos de espacios y lo ponemos en el input
+						if (contact.tel && contact.tel.length > 0) {
+							// Limpiamos caracteres no numéricos excepto el +
+							let cleanPhone = contact.tel[0].replace(/[^\d+]/g, "");
+							document.getElementById('delivery-phone').value = cleanPhone;
+						}
+					}
+				} catch (ex) {
+					console.log("Cancelado o error: " + ex.message);
+				}
+			} else {
+				alert("Tu navegador no soporta la selección de contactos. Por favor, digítalo manualmente.");
+				// Ocultamos el botón si no es compatible para futuros usos
+				document.getElementById('btn-contacts').style.display = 'none';
 			}
 		}
 		
