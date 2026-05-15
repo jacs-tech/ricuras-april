@@ -1142,11 +1142,20 @@
 		}	
 				
 		window.onclick = function(event) {
-			// (CLOSES MODULES WHEN CLICKING OUT OF IT)
+			// 1. Lógica para el Schedule Box (Horario)
 			if (!event.target.matches('#status-text')) {
 				const box = document.getElementById('schedule-box');
-				if (box.classList.contains('show')) {
+				if (box && box.classList.contains('show')) {
 					box.classList.remove('show');
+				}
+			}
+
+			// 2. Lógica para el Dropdown Menu
+			// Verifica que el clic NO sea en el botón del menú (ajusta '.dropbtn' si usas otro nombre)
+			if (!event.target.matches('.dropbtn') && !event.target.closest('.dropdown-content')) {
+				const dropdown = document.getElementById('dropdown-menu');
+				if (dropdown && dropdown.classList.contains('show')) {
+					dropdown.classList.remove('show');
 				}
 			}
 		}
