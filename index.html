@@ -469,10 +469,11 @@
 			<input type="text" id="delivery-name" placeholder="Ej. Juan Pérez">
 
 			<label>Número de teléfono:</label>
-			<div style="display: flex; gap: 10px; margin-bottom: 10px;">
-				<input type="tel" id="delivery-phone" placeholder="Ej. 3001234567" style="flex-grow: 1;">
+			<div style="display: flex; gap: 10px; margin-bottom: 10px; align-items: stretch;">
+				<input type="tel" id="delivery-phone" style="flex-grow: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px; height: 45px; box-sizing: border-box;">
+				
 				<button type="button" id="btn-contacts" onclick="seleccionarContacto()" 
-						style="background: #eee; border: 1px solid #ccc; border-radius: 5px; padding: 0 10px; cursor: pointer; white-space: nowrap; min-width: fit-content;" 
+						style="background: #eee; border: 1px solid #ccc; border-radius: 5px; padding: 0 15px; cursor: pointer; white-space: nowrap; height: 45px; display: flex; align-items: center; justify-content: center; box-sizing: border-box;" 
 						title="Seleccionar de mis contactos">
 					👤+
 				</button>
