@@ -385,6 +385,46 @@
 			background: #d44a1d;
 		}
 
+		/* El contenedor flex */
+		.phone-input-group {
+			display: flex;
+			gap: 10px;
+			margin-bottom: 10px;
+			align-items: center; /* Alineación vertical al centro */
+			width: 100%;
+		}
+
+		/* Estilo unificado para el input y el botón */
+		.phone-input-group input,
+		.phone-input-group button {
+			height: 45px; /* Altura idéntica para ambos */
+			box-sizing: border-box; /* Crucial: incluye el padding y borde en los 45px */
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			margin: 0; /* Elimina márgenes extra */
+		}
+
+		#delivery-phone {
+			flex-grow: 1; /* El input toma el espacio sobrante */
+			padding: 0 12px;
+			font-size: 1rem;
+		}
+
+		#btn-contacts {
+			background: #eee;
+			padding: 0 15px;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			white-space: nowrap;
+			min-width: 50px;
+		}
+
+		#btn-contacts:hover {
+			background: #e0e0e0;
+		}
+
 	    .day-name { font-weight: 600; }
     </style>
 </head>
@@ -512,11 +552,9 @@
 			<input type="text" id="delivery-name" placeholder="Ej. Juan Pérez">
 
 			<label>Número de teléfono:</label>
-			<div style="display: flex; gap: 10px; margin-bottom: 10px; align-items: stretch;">
-				<input type="tel" id="delivery-phone" placeholder="Ej. 3001234567" style="flex-grow: 1;">
-				<button type="button" id="btn-contacts" onclick="seleccionarContacto()" 
-						style="background: #eee; border: 1px solid #ccc; border-radius: 5px; padding: 0 10px; height: 40px; cursor: pointer; white-space: nowrap; min-width: fit-content; display: flex; align-items: center; justify-content: center; box-sizing: border-box;" 
-						title="Seleccionar de mis contactos">
+			<div id="phone-container" class="phone-input-group">
+				<input type="tel" id="delivery-phone" placeholder="Ej. 3001234567">
+				<button type="button" id="btn-contacts" onclick="seleccionarContacto()" title="Seleccionar de mis contactos">
 					👤+
 				</button>
 			</div>
