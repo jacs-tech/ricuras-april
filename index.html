@@ -1150,10 +1150,13 @@
 				}
 			}
 
-			// 2. Lógica para el Dropdown Menu
-			// Verifica que el clic NO sea en el botón del menú (ajusta '.dropbtn' si usas otro nombre)
-			if (!event.target.matches('.dropbtn') && !event.target.closest('.dropdown-content')) {
-				const dropdown = document.getElementById('dropdown-menu');
+			// 2. Lógica para tu Dropdown
+			// Usamos el ID "dropdown" que es el que tienes en tu HTML
+			const dropdown = document.getElementById('dropdown');
+			
+			// Verificamos si el clic NO fue en el botón que abre el menú (ej. .dropbtn)
+			// Y verificamos que el clic NO haya sido dentro del menú mismo
+			if (!event.target.matches('.dropbtn') && !event.target.closest('#dropdown')) {
 				if (dropdown && dropdown.classList.contains('show')) {
 					dropdown.classList.remove('show');
 				}
