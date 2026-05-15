@@ -430,7 +430,7 @@
 </head>
 <body>
     <header>
-        <button class="burger-menu" onclick="toggleMenu()">☰</button>
+        <button id="menu-icon" class="burger-menu" onclick="toggleMenu()">☰</button>
         <div class="store-name">
   	    	<a href="#" id="header-store-name" style="text-decoration: none; color: inherit; text-transform: uppercase; ">
 				Cargando...
@@ -1142,26 +1142,26 @@
 		}	
 				
 		window.onclick = function(event) {
-			// 1. Lógica para el Schedule Box (Horario)
-			if (!event.target.matches('#status-text')) {
+			// --- 1. LÓGICA PARA EL HORARIO (SCHEDULE BOX) ---
+			// Si el clic NO fue en el texto de estado ("Abierto/Cerrado") 
+			// y NO fue dentro de la caja de horarios misma...
+			if (!event.target.matches('#status-text') && !event.target.closest('#schedule-box')) {
 				const box = document.getElementById('schedule-box');
 				if (box && box.classList.contains('show')) {
 					box.classList.remove('show');
 				}
 			}
 
-			// 2. Lógica para tu Dropdown
-			// Usamos el ID "dropdown" que es el que tienes en tu HTML
-			const dropdown = document.getElementById('dropdown');
-			
-			// Verificamos si el clic NO fue en el botón que abre el menú (ej. .dropbtn)
-			// Y verificamos que el clic NO haya sido dentro del menú mismo
-			if (!event.target.matches('.dropbtn') && !event.target.closest('#dropdown')) {
+			// --- 2. LÓGICA PARA EL DROPDOWN MENU ---
+			// Si el clic NO fue en el icono/botón del menú
+			// y NO fue dentro del contenedor del dropdown...
+			if (!event.target.matches('#menu-icon') && !event.target.closest('#dropdown')) {
+				const dropdown = document.getElementById('dropdown');
 				if (dropdown && dropdown.classList.contains('show')) {
 					dropdown.classList.remove('show');
 				}
 			}
-		}
+		};
 		
 
 		// 5. === CLEANING AND RESET === 
