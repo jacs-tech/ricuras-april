@@ -1156,22 +1156,26 @@
 		}
 
 		async function seleccionarContacto() {
-			// Verificamos si el navegador soporta la API de contactos
 			const supported = ('contacts' in navigator && 'ContactsManager' in window);
 
 			if (supported) {
 				try {
-					// Pedimos permiso para leer el nombre y el número de teléfono
 					const props = ['name', 'tel'];
-					const opts = { multiple: false }; // Solo queremos un número
+					const opts = { multiple: false };
 					const contacts = await navigator.contacts.select(props, opts);
 
 					if (contacts.length > 0) {
 						const contact = contacts[0];
-						// Si tiene teléfono, lo limpiamos de espacios y lo ponemos en el input
 						if (contact.tel && contact.tel.length > 0) {
-							// Limpiamos caracteres no numéricos excepto el +
-							let cleanPhone = contact.tel[0].replace(/[^\d+]/g, "");
+							// 1. Dejamos solo números (eliminamos +, espacios, guiones)
+							let cleanPhone = contact.tel[0].replace(/\D/g, "");
+
+							// 2. Si el número es más largo de 10 dígitos (típico con código de país)
+							// Tomamos solo los últimos 10 dígitos.
+							if (cleanPhone.length > 10) {
+								cleanPhone = cleanPhone.slice(-10);
+							}
+
 							document.getElementById('delivery-phone').value = cleanPhone;
 						}
 					}
@@ -1179,8 +1183,7 @@
 					console.log("Cancelado o error: " + ex.message);
 				}
 			} else {
-				alert("Tu navegador no soporta la selección de contactos. Por favor, digítalo manualmente.");
-				// Ocultamos el botón si no es compatible para futuros usos
+				alert("Tu navegador no soporta la selección de contactos.");
 				document.getElementById('btn-contacts').style.display = 'none';
 			}
 		}
