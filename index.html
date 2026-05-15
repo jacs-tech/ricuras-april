@@ -430,7 +430,7 @@
 </head>
 <body>
     <header>
-        <button id="menu-icon" class="burger-menu" onclick="toggleMenu()">☰</button>
+        <button id="menu-icon" class="burger-menu" onclick="toggleMenu(event)">☰</button>
         <div class="store-name">
   	    	<a href="#" id="header-store-name" style="text-decoration: none; color: inherit; text-transform: uppercase; ">
 				Cargando...
@@ -1059,6 +1059,9 @@
 		// FUNCTIONS THAT OPENS, CLOSES, AND SHOW STUFF. THEY ARE VISUAL
 
 		function toggleMenu() {
+			// If you pass the event, we stop it from reaching the 'window'
+    		if (event) event.stopPropagation();
+
 			const dropdown = document.getElementById('dropdown');
 			dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
 		}
@@ -1143,24 +1146,21 @@
 				
 		window.onclick = function(event) {
 			const dropdown = document.getElementById('dropdown');
-			const menuIcon = document.getElementById('menu-icon');
 			const scheduleBox = document.getElementById('schedule-box');
-			const statusText = document.getElementById('status-text');
 
-			// --- 1. LÓGICA PARA EL DROPDOWN ---
-			// Si el menú está abierto...
+			// --- Dropdown Logic ---
+			// If the click is NOT the menu itself and the menu is open, close it.
 			if (dropdown && dropdown.classList.contains('show')) {
-				// Y el clic NO fue en el botón del menú (ni en sus hijos como el ☰)
-				// Y el clic NO fue dentro del contenido del dropdown
-				if (!menuIcon.contains(event.target) && !dropdown.contains(event.target)) {
+				if (!dropdown.contains(event.target)) {
 					dropdown.classList.remove('show');
 				}
 			}
 
-			// --- 2. LÓGICA PARA EL HORARIO ---
+			// --- Schedule Box Logic ---
+			// If the click is NOT the status text and NOT inside the box, close it.
 			if (scheduleBox && scheduleBox.classList.contains('show')) {
-				// Si el clic NO fue en el texto de estado ni dentro de la caja de horarios
-				if (statusText !== event.target && !scheduleBox.contains(event.target)) {
+				const statusText = document.getElementById('status-text');
+				if (event.target !== statusText && !scheduleBox.contains(event.target)) {
 					scheduleBox.classList.remove('show');
 				}
 			}
