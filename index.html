@@ -853,9 +853,9 @@
 
 			// Info de entrega
 			let infoEntrega = encodeURIComponent(`\n👤 *Recibe:* ${nombre}\n📍 *Dirección:* ${direccionManual}`);
-			if (urlUbicacion) infoEntrega += encodeURIComponent(`\n🗺️ *Mapa:* ${urlUbicacion}`);
+			if (urlUbicacion) infoEntrega += encodeURIComponent(`\n🗺️ *Mapa:* ${urlUbicacion}\n`);
 
-			infoEntrega += encodeURIComponent(`\n💰 *Forma de pago:* ${pagoSeleccionado}`);
+			infoEntrega += encodeURIComponent(`\n💰 *Forma de pago:* ${pagoSeleccionado}\n`);
 			if (notas.trim() !== "") {
 				infoEntrega += encodeURIComponent(`\n📝 *Notas:* ${notas}`);
 			}
