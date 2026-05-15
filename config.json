@@ -8,7 +8,7 @@
     {
       "open": 15,
       "close": 2,
-      "isPromo": false
+      "isPromo": true
     },
     {
       "open": 15,
@@ -33,12 +33,12 @@
     {
       "open": 15,
       "close": 24,
-      "isPromo": false
+      "isPromo": true
     },
     {
       "open": 15,
       "close": 2,
-      "isPromo": false
+      "isPromo": true
     }
   ]
 }

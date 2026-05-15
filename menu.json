@@ -5,11 +5,27 @@
     "items": [
       {
         "nickname": "pr1",
-        "name": "2 HAMBURGUESAS",
+        "name": "2 HAMBURGUESAS SENCILLAS",
         "desc": "Pan, Carne casera, tomate, lechuga, tocineta, queso, ripio, salsas.",
         "price": 17000,
         "wa_item": "2 Hamburguesas (Promo)",
-        "packagePrice": 1000
+        "packagePrice": 500
+      },
+      {
+        "nickname": "pr2",
+        "name": "3 PERROS SENCILLOS",
+        "desc": "Pan, salchicha, cebolla, ensalada, ripio, queso, salsa.",
+        "price": 20000,
+        "wa_item": "3 Perros Sencillos (Promo)",
+        "packagePrice": 1500
+      },
+      {
+        "nickname": "pr3",
+        "name": "3 SALCHIPAPAS SENCILLAS",
+        "desc": "Papa francesa, salchicha, ripio, salsas.",
+        "price": 20000,
+        "wa_item": "3 Perros Sencillos (Promo)",
+        "packagePrice": 0
       }
     ]
   },
@@ -193,7 +209,7 @@
         "desc": "Pan 40 CM, carne de res, carne de cerdo, tomate, lechuga, cebolla, aguacate, maicitos, tocineta, queso.",
         "price": 28000,
         "wa_item": "Pepito",
-        "packagePrice": 500
+        "packagePrice": 1000
       },
       {
         "nickname": "pt2",

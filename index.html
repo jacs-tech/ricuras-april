@@ -487,6 +487,9 @@
 				📍 Adjuntar mi ubicación actual
 			</button>
 
+			<label>¿Alguna instrucción especial?</label>
+			<textarea id="delivery-notes" placeholder="Ej. Sin cebolla, salsas aparte, el timbre no sirve..." style="height: 60px;"></textarea>
+
 			<div class="modal-actions">
 				<button onclick="cerrarModal()" class="btn-cancel">Cancelar</button>
 				<button onclick="confirmarEnvio()" class="btn-send">Enviar Pedido</button>
@@ -810,6 +813,8 @@
 			// (PREPARES WHATSAPP MSG WITH THE ORDER)
 			const nombre = document.getElementById('delivery-name').value;
 			const direccionManual = document.getElementById('delivery-address').value;
+			const pagoSeleccionado = document.querySelector('input[name="payment-mode"]:checked').value;
+			const notas = document.getElementById('delivery-notes').value;
 
 			if (!nombre || (!direccionManual && !urlUbicacion)) {
 				alert("Por favor completa el nombre y la dirección.");
@@ -849,6 +854,11 @@
 			// Info de entrega
 			let infoEntrega = encodeURIComponent(`\n👤 *Recibe:* ${nombre}\n📍 *Dirección:* ${direccionManual}`);
 			if (urlUbicacion) infoEntrega += encodeURIComponent(`\n🗺️ *Mapa:* ${urlUbicacion}`);
+
+			infoEntrega += encodeURIComponent(`\n💰 *Forma de pago:* ${pagoSeleccionado}`);
+			if (notas.trim() !== "") {
+				infoEntrega += encodeURIComponent(`\n📝 *Notas:* ${notas}`);
+			}
 
 			const mensajeFinal = orderText + infoEntrega;
 			
