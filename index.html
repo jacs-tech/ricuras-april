@@ -342,6 +342,7 @@
             border-bottom: 1px solid #eee;	
         }
 
+		/* PAYMENT METHOD MODAL STYLES */
 		.payment-item {
 			display: flex;
 			justify-content: space-between;
@@ -385,6 +386,7 @@
 			background: #d44a1d;
 		}
 
+		/* PHONE NUMBER BOX STYLE */
 		/* El contenedor flex */
 		.phone-input-group {
 			display: flex;
@@ -547,7 +549,7 @@
 	<div id="delivery-modal" class="modal-overlay" style="display: none;">
 		<div class="modal-content">
 			<h3>Detalles de Entrega</h3>
-		
+
 			<label>Nombre de quien recibe:</label>
 			<input type="text" id="delivery-name" placeholder="Ej. Juan Pérez">
 
@@ -571,9 +573,13 @@
 				</label>
 			</div>
 
+			<div class="payment-notice" style="background-color: #fdf6f0; border-left: 4px solid #EE5825; padding: 10px 12px; margin: 15px 0; border-radius: 4px; font-size: 0.85rem; color: #555; line-height: 1.4;">
+				📌 <strong>IMPORTANTE:</strong> Confirmaremos tu pedido y valor total en un momento. Si pagas por <strong>Transferencia</strong>, recuerda enviar el comprobante por WhatsApp para iniciar la preparación.
+			</div>
+
 			<label>Dirección o Ubicación:</label>
 			<textarea id="delivery-address" placeholder="Escribe tu dirección detallada..."></textarea>
-		
+
 			<button type="button" onclick="obtenerGeo()" class="btn-geo">
 				📍 Adjuntar mi ubicación actual
 			</button>
@@ -926,7 +932,7 @@
 			const pagoSeleccionado = document.querySelector('input[name="payment-mode"]:checked').value;
 			const notas = document.getElementById('delivery-notes').value;
 			const telefono = document.getElementById('delivery-phone').value;
-
+			
 			if (!nombre || (!direccionManual && !urlUbicacion)) {
 				alert("Por favor completa el nombre y la dirección.");
 				return;
@@ -937,7 +943,30 @@
 			const shouldChargePackage = window.appConfig && window.appConfig.chargePackage;
 			let store = window.appConfig.storeName || "la tienda";
 			
-			let orderText = encodeURIComponent(`¡Hola ${store}! Quisiera hacer el siguiente pedido:\n\n`);
+			// ====================================================================
+			// --- INSERCIÓN AQUÍ: GENERAR TIMESTAMP (FECHA Y HORA FORMATO 12H) ---
+			// ====================================================================
+			const ahora = new Date();
+			
+			// Formato de fecha: dd/mm/aaaa
+			const fecha = ahora.toLocaleDateString('es-CO', {
+				day: '2-digit',
+				month: '2-digit',
+				year: 'numeric'
+			});
+			
+			// Formato de hora: hh:mm aa (12 horas)
+			let horas = ahora.getHours();
+			const minutos = ahora.getMinutes().toString().padStart(2, '0');
+			const ampm = horas >= 12 ? 'PM' : 'AM';
+			horas = horas % 12;
+			horas = horas ? horas : 12; // Si es 0, lo transforma en 12
+			const horaFormateada = `${horas.toString().padStart(2, '0')}:${minutos} ${ampm}`;
+
+			// Construimos la base del mensaje incluyendo el ticket de tiempo arriba
+			let orderText = encodeURIComponent(`📅 ${fecha}  ⏰ ${horaFormateada}\n\n`);
+			orderText += encodeURIComponent(`¡Hola ${store}! Quisiera hacer el siguiente pedido:\n\n`);
+			// ====================================================================
 
 			// Bucle para extraer productos del carrito
 			Object.values(products).forEach(p => {
@@ -966,12 +995,24 @@
 			let infoEntrega = encodeURIComponent(`\n👤 *Recibe:* ${nombre}\n📞 *Tel:* ${telefono}\n📍 *Dirección:* ${direccionManual}`);
 			if (urlUbicacion) infoEntrega += encodeURIComponent(`\n🗺️ *Mapa:* ${urlUbicacion}\n`);
 
-			infoEntrega += encodeURIComponent(`\n💰 *Forma de pago:* ${pagoSeleccionado}\n`);
-			if (notas.trim() !== "") {
-				infoEntrega += encodeURIComponent(`\n📝 *Notas:* ${notas}`);
+			let textoPago = `💰 *Forma de pago:* ${pagoSeleccionado}`;
+
+			// Si es transferencia y el usuario seleccionó un método específico del modal
+			if (pagoSeleccionado === 'Transferencia' && window.metodoTransferenciaSeleccionado) {
+				textoPago = `💰 *Forma de pago:* \nTransferencia ${window.metodoTransferenciaSeleccionado}`;
 			}
 
-			const mensajeFinal = orderText + infoEntrega;
+			// Ahora codificamos e insertamos en infoEntrega
+			infoEntrega += encodeURIComponent(`\n${textoPago}\n`);
+
+			if (notas.trim() !== "") {
+				infoEntrega += encodeURIComponent(`\n📝 *Notas:* \n${notas}\n`);
+			}
+
+			// --- CIERRE ---
+			const cierreMensaje = encodeURIComponent(`\n⏳ Quedo atento a la confirmación de mi pedido y al valor total a pagar con domicilio incluido. ¡Muchas gracias!`);
+		    
+			const mensajeFinal = orderText + infoEntrega + cierreMensaje;
 			
 			document.getElementById('delivery-modal').style.display = 'none';
 			document.getElementById('cart-modal').classList.remove('show');
@@ -980,7 +1021,11 @@
 			window.open(`https://wa.me/${numeroWhatsAppStore}?text=${mensajeFinal}`);
 
 			cerrarModal();
-			logAnalytics("WhatsApp Order", "User clicked send order button");           
+			logAnalytics("WhatsApp Order", "User clicked send order button");       
+			
+			// Guardar el teléfono de forma persistente
+    		localStorage.setItem('delivery_user_phone', telefono);
+			localStorage.setItem('delivery_user_name', nombre);
 		}
 		
 		function obtenerGeo() {
@@ -1045,13 +1090,13 @@
 			}
 		}
 
-		function copiarAlPortapapeles(texto) {
+		function copiarAlPortapapeles(texto, label) {
 			navigator.clipboard.writeText(texto).then(() => {
-				alert("Copiado al portapapeles: " + texto);
-				// Cerrar el modal automáticamente después de copiar
+				// Guardamos el nombre exacto del Excel (Ej: "Bancolombia", "Nequi", "Llave Bre-B")
+				window.metodoTransferenciaSeleccionado = label; 
+				
+				alert("¡Copiado! Ya puedes pegar el dato en tu app de pago.");
 				document.getElementById('payment-modal').style.display = 'none';
-			}).catch(err => {
-				console.error('Error al copiar: ', err);
 			});
 		}
 
@@ -1137,6 +1182,19 @@
 			}		
 			document.getElementById('cart-modal').classList.remove('show');
 			document.getElementById('delivery-modal').style.display = 'flex';	    
+
+			// --- NUEVO: Autorellenar el teléfono si está guardado en localStorage ---
+			const telefonoGuardado = localStorage.getItem('delivery_user_phone');
+			const nombreGuardado = localStorage.getItem('delivery_user_name');
+			const inputTelefono = document.getElementById('delivery-phone');
+			const inputNombre = document.getElementById('delivery-name');
+			
+			if (telefonoGuardado && inputTelefono) {
+				inputTelefono.value = telefonoGuardado;
+			}
+			if (nombreGuardado && inputNombre) {
+				inputNombre.value = nombreGuardado;
+			}
 		}
 		
 		function cerrarModal() {
