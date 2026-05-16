@@ -1214,6 +1214,17 @@
 			if (nombreGuardado && inputNombre) {
 				inputNombre.value = nombreGuardado;
 			}
+			// ====================================================================
+			// --- NUEVO: MARCAR EFECTIVO POR DEFECTO AL ABRIR ---
+			// ====================================================================
+			const radioEfectivo = document.querySelector('input[name="payment-mode"][value="Efectivo"]');
+			if (radioEfectivo) {
+				radioEfectivo.checked = true;
+			}
+			
+			// Si usabas la variable global para el nombre de la transferencia, la limpias aquí también
+			window.metodoTransferenciaSeleccionado = null;
+			// ====================================================================
 		}
 		
 		function cerrarModal() {
