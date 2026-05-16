@@ -406,6 +406,14 @@
 			margin: 0; /* Elimina márgenes extra */
 		}
 
+		#delivery-name {
+			width: 100%;             /* Hace que ocupe todo el ancho disponible del modal */
+			padding: 10px 12px;      /* Cambié el 0 por 10px arriba/abajo para que el texto no quede aplastado */
+			font-size: 1rem;
+			box-sizing: border-box;  /* Evita que el padding ensanche el input y se salga del modal */
+			height: 40px;            /* Le da una altura cómoda para dar tap en celulares */
+		}
+
 		#delivery-phone {
 			flex-grow: 1; /* El input toma el espacio sobrante */
 			padding: 0 12px;
@@ -1224,6 +1232,15 @@
 			
 			// Si usabas la variable global para el nombre de la transferencia, la limpias aquí también
 			window.metodoTransferenciaSeleccionado = null;
+			
+			// ====================================================================
+			// --- NUEVO: RESETEAR DIRECCIÓN Y NOTAS AL ABRIR ---
+			// ====================================================================
+			const inputDireccion = document.getElementById('delivery-address');
+			const inputNotas = document.getElementById('delivery-notes');
+
+			if (inputDireccion) inputDireccion.value = "";
+			if (inputNotas) inputNotas.value = "";
 			// ====================================================================
 		}
 		
