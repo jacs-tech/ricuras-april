@@ -1029,19 +1029,38 @@
 		}
 		
 		function obtenerGeo() {
-			// (OBTAINS GPS)
-			// Allows the client to share to the restaurant their exact location by GPS
 			const btn = document.querySelector('.btn-geo');
+			
+			// SI YA TIENE UBICACIÓN: El clic la borra (actúa como resetGeo)
+			if (typeof urlUbicacion !== 'undefined' && urlUbicacion !== "") {
+				resetGeo();
+				return;
+			}
+
+			// SI NO TIENE UBICACIÓN: Hace la lógica normal de buscar el GPS
 			if (navigator.geolocation) {
 				btn.innerText = "Cargando ubicación...";
 				navigator.geolocation.getCurrentPosition((pos) => {
-					urlUbicacion = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
-					btn.innerText = "✅ Ubicación adjuntada";
+					// Nota: Corregido el "0{" por "${"
+					urlUbicacion = `https://maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude}`;
+					btn.innerText = "❌ Quitar ubicación adjuntada"; // Cambia el texto para avisar que puede borrarla
 					btn.style.backgroundColor = "#e8f5e9";
 				}, () => {
 					alert("No se pudo obtener la ubicación. Por favor escríbela manualmente.");
 					btn.innerText = "📍 Intentar de nuevo";
 				});
+			}
+		}
+
+		function resetGeo() {
+			// 1. Limpiamos la variable global para que no se envíe en el WhatsApp
+			urlUbicacion = ""; 
+			
+			// 2. Restauramos el botón a su estado original
+			const btn = document.querySelector('.btn-geo');
+			if (btn) {
+				btn.innerText = "📍 Adjuntar mi ubicación actual";
+				btn.style.backgroundColor = ""; // Quita el color verde y vuelve al CSS original
 			}
 		}
 
@@ -1200,6 +1219,7 @@
 		function cerrarModal() {
 			document.getElementById('delivery-modal').style.display = 'none';
 			document.getElementById('cart-modal').classList.add('show');
+			resetGeo(); 
 		}	
 				
 		window.onclick = function(event) {
