@@ -427,7 +427,7 @@
 			padding: 10px 12px;      /* Mismo espacio interno para que el texto se alinee igual */
 			box-sizing: border-box;  /* Evita que se salgan de los bordes del modal */
 			border: 1px solid #ccc;  /* Cambia esto si tus inputs usan otro color de borde (ej. #ddd) */
-			border-radius: 4px;      /* Bordes ligeramente redondeados como los demás campos */
+			border-radius: 8px;      /* Bordes ligeramente redondeados como los demás campos */
 			resize: vertical;        /* Permite al usuario estirarlo solo hacia abajo si lo necesita */
 			height: 60px;
 		}
@@ -1048,6 +1048,20 @@
 			localStorage.setItem('delivery_user_name', nombre);
 		}
 		
+		// ====================================================================
+		// --- EL SCRIPT DE AUTO-CRECIMIENTO VA AQUÍ (AL FINAL DEL ARCHIVO) ---
+		// ====================================================================
+		document.addEventListener("DOMContentLoaded", function() {
+			const textareas = document.querySelectorAll('#delivery-address, #delivery-notes');
+			
+			textareas.forEach(textarea => {
+				textarea.addEventListener('input', function() {
+					this.style.height = 'auto'; // Resetea la altura
+					this.style.height = this.scrollHeight + 'px'; // Toma la altura del texto
+				});
+			});
+		});
+
 		function obtenerGeo() {
 			const btn = document.querySelector('.btn-geo');
 			
